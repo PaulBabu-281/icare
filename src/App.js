@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Admin from "./screens/admin/admin_dashboard";
-// import logo from './logo.svg';
-// import './App.css';
 import Login from "./screens/Login";
-//import { useNavigate } from "react-router-dom";
+import {
+  Route,
+  // Router,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
+import CardView from "./screens/admin/cardItemView";
+import UserManagement from "./screens/admin/userManagement";
+import TokenView from "./screens/admin/token";
+import Stocks from "./screens/admin/stocks";
+import PatientDiagnosis from "./screens/admin/PatientDiagnosis";
 
 function App() {
   const LOCAL_STORAGE_KEY_USER = "user";
@@ -12,7 +20,7 @@ function App() {
     userid: "admin",
     password: "admin",
   };
-
+  let navigate = useNavigate();
   // useEffect(() => {
   //   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
   //   console.log(user);
@@ -54,6 +62,9 @@ function App() {
   const Logout = () => {
     setUserid("");
     setPassword("");
+    localStorage.setItem(LOCAL_STORAGE_KEY_USER, "");
+    localStorage.setItem(LOCAL_STORAGE_KEY_PASSWORD, "");
+    navigate("/");
     // setUser({ name: "", email: "" });
     //console.log("loiu");
   };
@@ -72,6 +83,16 @@ function App() {
           //error={error}
         />
       )}
+      <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route exact path='/admin' element={<Admin />} />
+        <Route path='/admin/cardview' element={<CardView />} />
+        <Route path='/admin/usermanagement' element={<UserManagement />} />
+        <Route path='/admin/tokenview' element={<TokenView />} />
+        <Route path='/admin/stocks' element={<Stocks />} />
+        <Route path='/admin/patientdiagnosis' element={<PatientDiagnosis />} />
+        <Route path='/admin/tokenview/*' element={<PatientDiagnosis />} />
+      </Routes>
     </div>
   );
 }

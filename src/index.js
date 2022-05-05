@@ -3,11 +3,21 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+// import CardView from "./screens/admin/cardItemView";
+// import UserManagement from "./screens/admin/userManagement";
+// import TokenView from "./screens/admin/token";
+// import Stocks from "./screens/admin/stocks";
+// import PatientDiagnosis from "./screens/admin/PatientDiagnosis";
+// import Admin from "./screens/admin/admin_dashboard";
+// import Login from "./screens/Login";
 
 ReactDOM.render(
   <BrowserRouter>
     <App />
+    <Routes>
+      <Route path='/' element={<App />} />
+    </Routes>
   </BrowserRouter>,
 
   document.getElementById("root")

@@ -1,8 +1,10 @@
 import * as React from "react";
+import "./component.css";
 import {
   // BrowserRouter,
   useNavigate,
-  Route,
+  Outlet,
+
   // Router,
   Routes,
 } from "react-router-dom";
@@ -27,10 +29,15 @@ import {
   Inventory,
   Biotech,
   Logout,
+  ConfirmationNumber,
 } from "@mui/icons-material";
-import DashboardView from "./cardItemView";
-import UserManagement from "./userManagement";
-import Stocks from "./stocks";
+// import UserManagement from "./userManagement";
+// import TokenView from "./token";
+// import Stocks from "./stocks";
+// import PatientDiagnosis from "./PatientDiagnosis";
+// import CardView from "./cardItemView";
+// import Login from "../Login";
+
 //import { Switch } from "@mui/material";
 
 const drawerWidth = 240;
@@ -39,7 +46,6 @@ export default function PermanentDrawerLeft(props) {
   let navigate = useNavigate();
   const LogoutHandler = (e) => {
     e.preventDefault();
-
     props.LogoutFunc();
   };
   const useStyles = makeStyles({
@@ -65,22 +71,27 @@ export default function PermanentDrawerLeft(props) {
     {
       text: "Dashboard",
       icon: <Dashboard sx={iconTheme} />,
-      path: "/",
+      path: "/admin/cardview",
     },
     {
       text: "User Management",
       icon: <Badge sx={iconTheme} />,
-      path: "/usermanagement",
+      path: "/admin/usermanagement",
     },
     {
       text: "Stocks",
       icon: <Inventory sx={iconTheme} />,
-      path: "/stocks",
+      path: "/admin/stocks",
     },
     {
       text: "Lab",
       icon: <Biotech sx={iconTheme} />,
-      path: "/",
+      path: "/admin/cardview",
+    },
+    {
+      text: "Token",
+      icon: <ConfirmationNumber sx={iconTheme} />,
+      path: "/admin/tokenview",
     },
   ];
 
@@ -170,7 +181,7 @@ export default function PermanentDrawerLeft(props) {
         </List>
         <Divider />
 
-        <List sx={{ paddingRight: 2, paddingTop: 40 }}>
+        <List sx={{ paddingRight: 2, paddingTop: 30 }}>
           <ListItem
             button
             key={"Logout"}
@@ -195,23 +206,18 @@ export default function PermanentDrawerLeft(props) {
         </List>
       </Drawer>
       <Box
+        // className='main-content'
         component='main'
-        sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
+        sx={{
+          flexGrow: 1,
+          bgcolor: "Background.default",
+          p: 3,
+        }}
       >
         <Toolbar />
-        {/* <Router>
-          <Routes>
-            <Route path='/' exact element={<DashboardView />} />
-            <Route path='/usermanagement' element={<UserManagement />} />
-          </Routes>
-        </Router> */}
-
-        <Routes>
-          <Route exact path='/' element={<DashboardView />} />
-          <Route path='/usermanagement' element={<UserManagement />} />
-          <Route path='/stocks' element={<Stocks />} />
-        </Routes>
+        <Box className='main-content'></Box>
       </Box>
+      <Outlet />
     </Box>
   );
 }
