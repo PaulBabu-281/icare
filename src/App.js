@@ -1,18 +1,33 @@
 import React, { useState, useEffect } from "react";
 import Admin from "./screens/admin/admin_dashboard";
-// import logo from './logo.svg';
-// import './App.css';
 import Login from "./screens/Login";
-//import { useNavigate } from "react-router-dom";
+import {
+  Route,
+  // Router,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
+import CardView from "./screens/admin/cardItemView";
+import UserManagement from "./screens/admin/userManagement";
+import TokenView from "./screens/admin/token";
+import Stocks from "./screens/admin/stocks";
+import PatientDiagnosis from "./screens/admin/PatientDiagnosis";
+import Doctor from "./screens/Doctor/Doctor";
 
 function App() {
   const LOCAL_STORAGE_KEY_USER = "user";
   const LOCAL_STORAGE_KEY_PASSWORD = "password";
-  const users = {
-    userid: "admin",
-    password: "admin",
-  };
-
+  const users = [
+    {
+      userid: "admin",
+      password: "admin",
+    },
+    {
+      userid: "doctor",
+      password: "doctor",
+    },
+  ];
+  let navigate = useNavigate();
   // useEffect(() => {
   //   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
   //   console.log(user);
@@ -32,28 +47,44 @@ function App() {
 
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");
+  const [isLogedin, setisLogedin] = useState(false);
+  const [LoggedInUser, setLoggedInUser] = useState("");
   // const [error, setError] = useState("");
   //const [success, setSuccess] = useState(false);
 
   const LoginDetail = (details) => {
     //  console.log(details);
-    if (
-      details.userid === users.userid &&
-      details.password === users.password
-    ) {
-      //setUser({ ...user, name: details.userid, password: details.password });
-      setUserid(details.userid);
-      setPassword(details.password);
-      localStorage.setItem(LOCAL_STORAGE_KEY_USER, details.userid);
-      localStorage.setItem(LOCAL_STORAGE_KEY_PASSWORD, details.password);
-      console.log("Logged In");
-      //console.log(user);
+
+    // users.map((user)=>(get(item) {
+    //   return [item.userid];
+    // }))
+
+    for (var i = 0; i < users.length; i++) {
+      if (users[i].userid == details.userid) {
+        setisLogedin(true);
+        setLoggedInUser(details.userid);
+        setUserid(details.userid);
+        setPassword(details.password);
+        localStorage.setItem(LOCAL_STORAGE_KEY_USER, details.userid);
+        localStorage.setItem(LOCAL_STORAGE_KEY_PASSWORD, details.password);
+        console.log("Logged In");
+      }
     }
+    console.log(isLogedin);
+
+    // if (isLogedin) {
+    //   //setUser({ ...user, name: details.userid, password: details.password });
+    //   //console.log(user);
+    // }
   };
 
   const Logout = () => {
     setUserid("");
     setPassword("");
+    localStorage.setItem(LOCAL_STORAGE_KEY_USER, "");
+    localStorage.setItem(LOCAL_STORAGE_KEY_PASSWORD, "");
+    setisLogedin(false);
+    // navigate("/login");
     // setUser({ name: "", email: "" });
     //console.log("loiu");
   };
@@ -64,14 +95,28 @@ function App() {
 
   return (
     <div style={{ height: "100%" }}>
-      {userid !== "" ? (
-        <Admin LogoutFunc={Logout} />
+      {isLogedin !== false ? (
+        LoggedInUser == "admin" ? (
+          <Admin LogoutFunc={Logout} />
+        ) : (
+          <Doctor LogoutFunc={Logout} />
+        )
       ) : (
         <Login
           LoginDetail={LoginDetail}
           //error={error}
         />
       )}
+      <Routes>
+        <Route path='/login' element={<Login />} />
+        {/* <Route exact path='/admin' element={<Admin />} /> */}
+        <Route path='/admin/cardview' element={<CardView />} />
+        <Route path='/admin/usermanagement' element={<UserManagement />} />
+        <Route path='/admin/tokenview' element={<TokenView />} />
+        <Route path='/admin/stocks' element={<Stocks />} />
+        <Route path='/admin/patientdiagnosis' element={<PatientDiagnosis />} />
+        <Route path='/admin/tokenview/*' element={<PatientDiagnosis />} />
+      </Routes>
     </div>
   );
 }

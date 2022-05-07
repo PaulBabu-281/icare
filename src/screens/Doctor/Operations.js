@@ -17,8 +17,6 @@ import {
 import {
   randomCreatedDate,
   randomTraderName,
-  randomEmail,
-  randomUpdatedDate,
 } from "@mui/x-data-grid-generator";
 import { Box, Button, Grid, Slide } from "@mui/material";
 import {
@@ -28,14 +26,14 @@ import {
   MedicalServices,
   Password,
   SentimentVerySatisfied,
-  RestartAlt,
+
 } from "@mui/icons-material";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
 });
 
-export default function UserManagement() {
+export default function Operations() {
   // input Dialog
 
   const [open, setOpen] = React.useState(false);
@@ -51,7 +49,7 @@ export default function UserManagement() {
 
   return (
     <Grid container direction='column' alignItems={"center"}>
-      <div style={{ height: 400, width: "80%", marginLeft: 248 }}>
+      <div style={{ height: 400, width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -124,9 +122,9 @@ export default function UserManagement() {
               <TextField
                 autoFocus
                 margin='dense'
-                id='email'
-                label='Email'
-                type='email'
+                id='category'
+                label='Category'
+                type='text'
                 fullWidth
                 variant='standard'
               />
@@ -138,8 +136,8 @@ export default function UserManagement() {
               <TextField
                 autoFocus
                 margin='dense'
-                id='age'
-                label='Age'
+                id='units'
+                label='Units'
                 type='number'
                 fullWidth
                 variant='standard'
@@ -152,8 +150,8 @@ export default function UserManagement() {
               <TextField
                 autoFocus
                 margin='dense'
-                id='post'
-                label='Postion'
+                id='unitType'
+                label='Unit Type'
                 type='text'
                 fullWidth
                 variant='standard'
@@ -164,9 +162,21 @@ export default function UserManagement() {
               <TextField
                 autoFocus
                 margin='dense'
-                id='password'
-                label='Password'
-                type='password'
+                id='company'
+                label='Company'
+                type='text'
+                fullWidth
+                variant='standard'
+              />
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              <Password sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+              <TextField
+                autoFocus
+                margin='dense'
+                id='effect'
+                label='Effect'
+                type='text'
                 fullWidth
                 variant='standard'
               />
@@ -217,20 +227,20 @@ export default function UserManagement() {
 
 const columns = [
   { field: "name", headerName: "Name", width: 160, editable: true },
-  { field: "email", headerName: "Email", width: 200, editable: true },
-  { field: "age", headerName: "Age", type: "number", editable: true },
-  { field: "post", headerName: "Position", type: 200, editable: true },
+  { field: "category", headerName: "Disease", width: 200, editable: true },
+  { field: "unit", headerName: "Unit", type: "number", editable: true },
+  
   {
-    field: "dateCreated",
-    headerName: "Date Created",
+    field: "company",
+    headerName: "Operation Date",
     type: "date",
     width: 180,
     editable: true,
   },
   {
-    field: "lastLogin",
-    headerName: "Last Login",
-    type: "dateTime",
+    field: "result",
+    headerName: "Result",
+    type: "text",
     width: 220,
     editable: true,
   },
@@ -241,7 +251,7 @@ const columns = [
     getActions: () => [
       <GridActionsCellItem icon={<EditIcon />} label='Edit' />,
       <GridActionsCellItem icon={<DeleteIcon />} label='Delete' />,
-      <GridActionsCellItem icon={<RestartAlt />} label='Reset Password' />,
+    
     ],
   },
 ];
@@ -250,46 +260,41 @@ const rows = [
   {
     id: 1,
     name: randomTraderName(),
-    email: randomEmail(),
-    age: 25,
-    post: "Doctor",
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
+    category: "Critical",
+    unit: 5,
+    company: randomCreatedDate(),
+    result: "Success",
   },
   {
     id: 2,
     name: randomTraderName(),
-    email: randomEmail(),
-    age: 36,
-    post: "Doctor",
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
+    category: "Heart- Critical",
+    unit: 7,
+    company: randomCreatedDate(),
+    result: "Success",
   },
   {
     id: 3,
     name: randomTraderName(),
-    email: randomEmail(),
-    age: 19,
-    post: "Doctor",
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
+    category: "Heart- Critical",
+    unit: 12,
+    company: randomCreatedDate(),
+    result: "Success",
   },
   {
     id: 4,
     name: randomTraderName(),
-    email: randomEmail(),
-    age: 28,
-    post: "Nurse",
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
+    category: "Broken Leg",
+    unit: 0,
+    company: randomCreatedDate(),
+    result: "Pending",
   },
   {
     id: 5,
     name: randomTraderName(),
-    email: randomEmail(),
-    age: 23,
-    post: "Pharamacy",
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
+    category: "Accident",
+    unit: 7,
+    company: randomCreatedDate(),
+    result: "Pending",
   },
 ];

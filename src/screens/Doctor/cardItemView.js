@@ -6,7 +6,6 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-// import Graph from "./graphView";
 
 const dataArr = [
   {
@@ -48,24 +47,21 @@ const card = (data) => {
 
 function DashboardView() {
   return (
-    <div style={{ height: 400, width: "100%", marginLeft: 248 }}>
-      <Grid container direction='column'>
-        today
-        <Grid container direction='row'>
-          {dataArr.map((items) => (
-            <Grid item>
-              <Box sx={{ minWidth: 275 }}>
-                <Card variant='outlined'>{card(items)}</Card>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-        This Week
-        {/* <Grid item>
-        <Graph />
-      </Grid> */}
+    <Grid container direction='column'>
+      today
+      <Grid container direction='row'>
+        {dataArr.map((items) => (
+          <Grid item>
+            {" "}
+            <Box sx={{ minWidth: 275 }}>
+              <Card variant='outlined'>{card(items)}</Card>
+            </Box>
+          </Grid>
+        ))}
       </Grid>
-    </div>
+      This Week
+      <Grid item>Graph Here (Coming soon...)</Grid>
+    </Grid>
   );
 }
 export default DashboardView;

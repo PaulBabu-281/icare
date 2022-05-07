@@ -28,7 +28,7 @@ import {
   MedicalServices,
   Password,
   SentimentVerySatisfied,
-  RestartAlt,
+
 } from "@mui/icons-material";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -51,7 +51,7 @@ export default function UserManagement() {
 
   return (
     <Grid container direction='column' alignItems={"center"}>
-      <div style={{ height: 400, width: "80%", marginLeft: 248 }}>
+      <div style={{ height: 400, width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -219,7 +219,7 @@ const columns = [
   { field: "name", headerName: "Name", width: 160, editable: true },
   { field: "email", headerName: "Email", width: 200, editable: true },
   { field: "age", headerName: "Age", type: "number", editable: true },
-  { field: "post", headerName: "Position", type: 200, editable: true },
+  { field: "dis", headerName: "Disease", type: 200, editable: true },
   {
     field: "dateCreated",
     headerName: "Date Created",
@@ -241,7 +241,7 @@ const columns = [
     getActions: () => [
       <GridActionsCellItem icon={<EditIcon />} label='Edit' />,
       <GridActionsCellItem icon={<DeleteIcon />} label='Delete' />,
-      <GridActionsCellItem icon={<RestartAlt />} label='Reset Password' />,
+    
     ],
   },
 ];
@@ -251,8 +251,8 @@ const rows = [
     id: 1,
     name: randomTraderName(),
     email: randomEmail(),
-    age: 25,
-    post: "Doctor",
+    age: 33,
+    dis: "Headache",
     dateCreated: randomCreatedDate(),
     lastLogin: randomUpdatedDate(),
   },
@@ -260,8 +260,8 @@ const rows = [
     id: 2,
     name: randomTraderName(),
     email: randomEmail(),
-    age: 36,
-    post: "Doctor",
+    age: 55,
+    dis: "Chest pain",
     dateCreated: randomCreatedDate(),
     lastLogin: randomUpdatedDate(),
   },
@@ -270,7 +270,7 @@ const rows = [
     name: randomTraderName(),
     email: randomEmail(),
     age: 19,
-    post: "Doctor",
+    dis: "Fever",
     dateCreated: randomCreatedDate(),
     lastLogin: randomUpdatedDate(),
   },
@@ -278,8 +278,8 @@ const rows = [
     id: 4,
     name: randomTraderName(),
     email: randomEmail(),
-    age: 28,
-    post: "Nurse",
+    age: 20,
+    dis: "Broken leg",
     dateCreated: randomCreatedDate(),
     lastLogin: randomUpdatedDate(),
   },
@@ -287,8 +287,8 @@ const rows = [
     id: 5,
     name: randomTraderName(),
     email: randomEmail(),
-    age: 23,
-    post: "Pharamacy",
+    age: 25,
+    dis: "Fever",
     dateCreated: randomCreatedDate(),
     lastLogin: randomUpdatedDate(),
   },
