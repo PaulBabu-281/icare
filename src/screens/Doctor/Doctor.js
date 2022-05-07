@@ -1,10 +1,8 @@
 import * as React from "react";
-import "./component.css";
 import {
   // BrowserRouter,
   useNavigate,
-  Outlet,
-
+  Route,
   // Router,
   Routes,
 } from "react-router-dom";
@@ -25,27 +23,23 @@ import { makeStyles } from "@mui/styles";
 import {
   AccountCircle,
   Dashboard,
-  Badge,
-  Inventory,
-  Biotech,
   Logout,
-  ConfirmationNumber,
+  Vaccines,
+  LocalHospital,
+  Science,
 } from "@mui/icons-material";
-// import UserManagement from "./userManagement";
-// import TokenView from "./token";
-// import Stocks from "./stocks";
-// import PatientDiagnosis from "./PatientDiagnosis";
-// import CardView from "./cardItemView";
-// import Login from "../Login";
-
+import DashboardView from "./cardItemView";
+import UserManagement from "./userManagement";
+import Operations from "./Operations";
 //import { Switch } from "@mui/material";
 
 const drawerWidth = 240;
 
-export default function PermanentDrawerLeft(props) {
+export default function Doctor(props) {
   let navigate = useNavigate();
   const LogoutHandler = (e) => {
     e.preventDefault();
+
     props.LogoutFunc();
   };
   const useStyles = makeStyles({
@@ -66,34 +60,27 @@ export default function PermanentDrawerLeft(props) {
     color: "#e9f4ff",
   };
 
-  const [appbarText, setText] = React.useState("Welcome");
-
   const menuItems = [
     //["Dashboard", "User Management", "Stocks", "Drafts"
     {
       text: "Dashboard",
       icon: <Dashboard sx={iconTheme} />,
-      path: "/admin/cardview",
+      path: "/",
     },
     {
-      text: "User Management",
-      icon: <Badge sx={iconTheme} />,
-      path: "/admin/usermanagement",
+      text: "Patients",
+      icon: <Vaccines sx={iconTheme} />,
+      path: "/usermanagement",
     },
     {
-      text: "Stocks",
-      icon: <Inventory sx={iconTheme} />,
-      path: "/admin/stocks",
+      text: "Operations",
+      icon: <LocalHospital sx={iconTheme} />,
+      path: "/operations",
     },
     {
-      text: "Lab",
-      icon: <Biotech sx={iconTheme} />,
-      path: "/admin/cardview",
-    },
-    {
-      text: "Token",
-      icon: <ConfirmationNumber sx={iconTheme} />,
-      path: "/admin/tokenview",
+      text: "Lab Result",
+      icon: <Science sx={iconTheme} />,
+      path: "/",
     },
   ];
 
@@ -114,7 +101,7 @@ export default function PermanentDrawerLeft(props) {
       >
         <Toolbar>
           <Typography variant='h6' noWrap component='div'>
-            {appbarText}
+            Dashboard
           </Typography>
         </Toolbar>
       </AppBar>
@@ -145,7 +132,7 @@ export default function PermanentDrawerLeft(props) {
                   <AccountCircle />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary='Admin' />
+              <ListItemText primary='Doctor' />
             </ListItem>
           </List>
         </Toolbar>
@@ -171,8 +158,6 @@ export default function PermanentDrawerLeft(props) {
                 },
               }}
               onClick={() => {
-                setText(item.text);
-
                 navigate(item.path);
               }}
 
@@ -185,7 +170,7 @@ export default function PermanentDrawerLeft(props) {
         </List>
         <Divider />
 
-        <List sx={{ paddingRight: 2, paddingTop: 30 }}>
+        <List sx={{ paddingRight: 2, paddingTop: 40 }}>
           <ListItem
             button
             key={"Logout"}
@@ -210,18 +195,23 @@ export default function PermanentDrawerLeft(props) {
         </List>
       </Drawer>
       <Box
-        // className='main-content'
         component='main'
-        sx={{
-          flexGrow: 1,
-          bgcolor: "Background.default",
-          p: 3,
-        }}
+        sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
       >
         <Toolbar />
-        <Box className='main-content'></Box>
+        {/* <Router>
+          <Routes>
+            <Route path='/' exact element={<DashboardView />} />
+            <Route path='/usermanagement' element={<UserManagement />} />
+          </Routes>
+        </Router> */}
+
+        <Routes>
+          <Route exact path='/' element={<DashboardView />} />
+          <Route path='/usermanagement' element={<UserManagement />} />
+          <Route path='/operations' element={<Operations />} />
+        </Routes>
       </Box>
-      <Outlet />
     </Box>
   );
 }
