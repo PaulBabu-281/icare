@@ -14,7 +14,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function RowAndColumnSpacing() {
+export default function PatientDiagnosis() {
   const [count, setCount] = useState(0);
   const nextToken = () => {
     setCount(count + 1);
@@ -58,7 +58,7 @@ export default function RowAndColumnSpacing() {
     },
   ];
   return (
-    <Box sx={{ marginLeft: "18%", width: "100%" }}>
+    <Box sx={{ width: "100%" }}>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid
           container

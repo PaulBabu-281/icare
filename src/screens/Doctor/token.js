@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import { DataGrid } from "@mui/x-data-grid";
-// import PatientDiagnosis from "./PatientDiagnosis";
 
 import {
   GridActionsCellItem,
@@ -16,27 +15,7 @@ import { Grid } from "@mui/material";
 import { Visibility } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//   return <Slide direction='up' ref={ref} {...props} />;
-// });
-
-// function navigateDiagnosis() {
-//   let navigate = useNavigate();
-//   navigate("/patientdiagnosis");
-// }
-
 export default function TokenView() {
-  //let navigate = useNavigate();
-  // const [open, setOpen] = React.useState(false);
-
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-
   return (
     <Grid container direction='column' alignItems={"center"}>
       <div style={{ height: 400, width: "100%" }}>
@@ -61,10 +40,6 @@ export default function TokenView() {
           borderWidth: 1,
         }}
       ></Grid>
-      {/* <Routes>
-        <Route exact path='/tokenview' element={<TokenView />} />
-        <Route path='/tokenview/*' element={<PatientDiagnosis />} />;
-      </Routes> */}
     </Grid>
   );
 }
@@ -107,7 +82,7 @@ const columns = [
     type: "actions",
     width: 150,
     getActions: () => [
-      <Link to={"/admin/patientdiagnosis"}>
+      <Link to={"/doctor/patientdiagnosis"}>
         <GridActionsCellItem icon={<Visibility />} label='Show' />,
       </Link>,
 

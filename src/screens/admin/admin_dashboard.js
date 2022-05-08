@@ -35,9 +35,8 @@ import {
   ConfirmationNumber,
 } from "@mui/icons-material";
 import UserManagement from "./userManagement";
-import TokenView from "./token";
+import TokenView from "../Doctor/token";
 import Stocks from "./stocks";
-import PatientDiagnosis from "./PatientDiagnosis";
 import CardView from "./cardItemView";
 // import Login from "../Login";
 
@@ -93,11 +92,6 @@ export default function PermanentDrawerLeft(props) {
       text: "Lab",
       icon: <Biotech sx={iconTheme} />,
       path: "/admin/cardview",
-    },
-    {
-      text: "Token",
-      icon: <ConfirmationNumber sx={iconTheme} />,
-      path: "/admin/tokenview",
     },
   ];
 
@@ -199,7 +193,14 @@ export default function PermanentDrawerLeft(props) {
         </List>
         <Divider />
 
-        <List sx={{ paddingRight: 2, paddingTop: 30 }}>
+        <List
+          sx={{
+            height: "100%",
+            paddingRight: 2,
+            paddingTop: "145%",
+            alignContent: "baseline",
+          }}
+        >
           <ListItem
             button
             key={"Logout"}
@@ -240,11 +241,6 @@ export default function PermanentDrawerLeft(props) {
           <Route path='/admin/usermanagement' element={<UserManagement />} />
           <Route path='/admin/tokenview' element={<TokenView />} />
           <Route path='/admin/stocks' element={<Stocks />} />
-          <Route
-            path='/admin/patientdiagnosis'
-            element={<PatientDiagnosis />}
-          />
-          <Route path='/admin/tokenview/*' element={<PatientDiagnosis />} />
         </Routes>
       </Box>
       <Outlet />
