@@ -58,7 +58,7 @@ export default function RowAndColumnSpacing() {
     },
   ];
   return (
-    <Box sx={{ marginLeft: "18%", width: "80%" }}>
+    <Box sx={{ marginLeft: "18%", width: "100%" }}>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid
           container
@@ -71,7 +71,7 @@ export default function RowAndColumnSpacing() {
             variant='outlined'
             startIcon={<ArrowBack />}
             onClick={() => {
-              lastToken();
+              if (count > 0) lastToken();
             }}
           >
             Back
@@ -85,7 +85,7 @@ export default function RowAndColumnSpacing() {
             variant='outlined'
             startIcon={<ArrowForward />}
             onClick={() => {
-              nextToken();
+              if (count < patients.length - 1) nextToken();
             }}
           >
             Next

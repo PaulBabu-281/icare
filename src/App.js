@@ -7,11 +7,11 @@ import {
   Routes,
   useNavigate,
 } from "react-router-dom";
-import CardView from "./screens/admin/cardItemView";
-import UserManagement from "./screens/admin/userManagement";
-import TokenView from "./screens/admin/token";
-import Stocks from "./screens/admin/stocks";
-import PatientDiagnosis from "./screens/admin/PatientDiagnosis";
+// import CardView from "./screens/admin/cardItemView";
+// import UserManagement from "./screens/admin/userManagement";
+// import TokenView from "./screens/admin/token";
+// import Stocks from "./screens/admin/stocks";
+// import PatientDiagnosis from "./screens/admin/PatientDiagnosis";
 import Doctor from "./screens/Doctor/Doctor";
 
 function App() {
@@ -42,13 +42,14 @@ function App() {
     if (userLocalSaveUser) {
       setUserid(userLocalSaveUser);
       setPassword(userLocalSavePassword);
+      setisLogedin(true);
     }
   }, []);
 
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");
   const [isLogedin, setisLogedin] = useState(false);
-  const [LoggedInUser, setLoggedInUser] = useState("");
+  // const [LoggedInUser, setLoggedInUser] = useState("");
   // const [error, setError] = useState("");
   //const [success, setSuccess] = useState(false);
 
@@ -62,7 +63,7 @@ function App() {
     for (var i = 0; i < users.length; i++) {
       if (users[i].userid == details.userid) {
         setisLogedin(true);
-        setLoggedInUser(details.userid);
+        // setLoggedInUser(details.userid);
         setUserid(details.userid);
         setPassword(details.password);
         localStorage.setItem(LOCAL_STORAGE_KEY_USER, details.userid);
@@ -84,7 +85,7 @@ function App() {
     localStorage.setItem(LOCAL_STORAGE_KEY_USER, "");
     localStorage.setItem(LOCAL_STORAGE_KEY_PASSWORD, "");
     setisLogedin(false);
-    // navigate("/login");
+    navigate("/");
     // setUser({ name: "", email: "" });
     //console.log("loiu");
   };
@@ -96,7 +97,7 @@ function App() {
   return (
     <div style={{ height: "100%" }}>
       {isLogedin !== false ? (
-        LoggedInUser == "admin" ? (
+        userid == "admin" ? (
           <Admin LogoutFunc={Logout} />
         ) : (
           <Doctor LogoutFunc={Logout} />
@@ -110,12 +111,12 @@ function App() {
       <Routes>
         <Route path='/login' element={<Login />} />
         {/* <Route exact path='/admin' element={<Admin />} /> */}
-        <Route path='/admin/cardview' element={<CardView />} />
+        {/* <Route path='/admin/cardview' element={<CardView />} />
         <Route path='/admin/usermanagement' element={<UserManagement />} />
         <Route path='/admin/tokenview' element={<TokenView />} />
         <Route path='/admin/stocks' element={<Stocks />} />
         <Route path='/admin/patientdiagnosis' element={<PatientDiagnosis />} />
-        <Route path='/admin/tokenview/*' element={<PatientDiagnosis />} />
+        <Route path='/admin/tokenview/*' element={<PatientDiagnosis />} /> */}
       </Routes>
     </div>
   );

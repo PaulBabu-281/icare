@@ -51,7 +51,7 @@ export default function UserManagement() {
 
   return (
     <Grid container direction='column' alignItems={"center"}>
-      <div style={{ height: 400, width: "80%", marginLeft: 248 }}>
+      <div style={{ height: 400, width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}

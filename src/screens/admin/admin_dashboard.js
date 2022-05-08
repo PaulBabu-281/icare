@@ -7,6 +7,9 @@ import {
 
   // Router,
   Routes,
+  Route,
+  useLocation,
+  matchRoutes,
 } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -31,11 +34,11 @@ import {
   Logout,
   ConfirmationNumber,
 } from "@mui/icons-material";
-// import UserManagement from "./userManagement";
-// import TokenView from "./token";
-// import Stocks from "./stocks";
-// import PatientDiagnosis from "./PatientDiagnosis";
-// import CardView from "./cardItemView";
+import UserManagement from "./userManagement";
+import TokenView from "./token";
+import Stocks from "./stocks";
+import PatientDiagnosis from "./PatientDiagnosis";
+import CardView from "./cardItemView";
 // import Login from "../Login";
 
 //import { Switch } from "@mui/material";
@@ -44,6 +47,7 @@ const drawerWidth = 240;
 
 export default function PermanentDrawerLeft(props) {
   let navigate = useNavigate();
+
   const LogoutHandler = (e) => {
     e.preventDefault();
     props.LogoutFunc();
@@ -99,6 +103,16 @@ export default function PermanentDrawerLeft(props) {
 
   // const ProfileHeader = () => {
   //   return <div>Hello</div>;
+  // };
+
+  const routes = [{ path: "/" }];
+  // const useCurrentPath = () => {
+  //   const location = useLocation();
+  //   // const [{ route }] = matchRoutes(routes, location);
+  //   console.log(location);
+  //   const route = "/";
+
+  //   return route;
   // };
 
   return (
@@ -220,6 +234,18 @@ export default function PermanentDrawerLeft(props) {
       >
         <Toolbar />
         <Box className='main-content'></Box>
+
+        <Routes>
+          <Route index path='/admin/cardview' element={<CardView />} />
+          <Route path='/admin/usermanagement' element={<UserManagement />} />
+          <Route path='/admin/tokenview' element={<TokenView />} />
+          <Route path='/admin/stocks' element={<Stocks />} />
+          <Route
+            path='/admin/patientdiagnosis'
+            element={<PatientDiagnosis />}
+          />
+          <Route path='/admin/tokenview/*' element={<PatientDiagnosis />} />
+        </Routes>
       </Box>
       <Outlet />
     </Box>

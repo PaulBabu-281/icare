@@ -1,4 +1,4 @@
-# Idoc
+# 🩺 Idoc
 
 ## Iot & AI powered kiosk for medical care​
 
