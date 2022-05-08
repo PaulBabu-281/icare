@@ -5,6 +5,7 @@ import {
   Route,
   // Router,
   Routes,
+  useLocation,
 } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -59,23 +60,24 @@ export default function Doctor(props) {
   const iconTheme = {
     color: "#e9f4ff",
   };
+  const [appbarText, setText] = React.useState("Welcome");
 
   const menuItems = [
     //["Dashboard", "User Management", "Stocks", "Drafts"
     {
       text: "Dashboard",
       icon: <Dashboard sx={iconTheme} />,
-      path: "/",
+      path: "doctor/dashboard",
     },
     {
       text: "Patients",
       icon: <Vaccines sx={iconTheme} />,
-      path: "/usermanagement",
+      path: "doctor/usermanagement",
     },
     {
       text: "Operations",
       icon: <LocalHospital sx={iconTheme} />,
-      path: "/operations",
+      path: "doctor/operations",
     },
     {
       text: "Lab Result",
@@ -101,7 +103,7 @@ export default function Doctor(props) {
       >
         <Toolbar>
           <Typography variant='h6' noWrap component='div'>
-            Dashboard
+            {appbarText}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -158,6 +160,7 @@ export default function Doctor(props) {
                 },
               }}
               onClick={() => {
+                setText(item.text);
                 navigate(item.path);
               }}
 
@@ -198,6 +201,7 @@ export default function Doctor(props) {
         component='main'
         sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
       >
+        {console.log(useLocation())}
         <Toolbar />
         {/* <Router>
           <Routes>
@@ -207,9 +211,9 @@ export default function Doctor(props) {
         </Router> */}
 
         <Routes>
-          <Route exact path='/' element={<DashboardView />} />
-          <Route path='/usermanagement' element={<UserManagement />} />
-          <Route path='/operations' element={<Operations />} />
+          <Route path='doctor/dashboard' element={<DashboardView />} />
+          <Route path='doctor/usermanagement' element={<UserManagement />} />
+          <Route path='doctor/operations' element={<Operations />} />
         </Routes>
       </Box>
     </Box>

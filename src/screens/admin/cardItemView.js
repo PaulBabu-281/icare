@@ -48,7 +48,7 @@ const card = (data) => {
 
 function DashboardView() {
   return (
-    <div style={{ height: 400, width: "100%", marginLeft: 248 }}>
+    <div style={{ height: 400, width: "100%" }}>
       <Grid container direction='column'>
         today
         <Grid container direction='row'>
