@@ -10,6 +10,7 @@ import {
   Route,
   useLocation,
   matchRoutes,
+  Navigate,
 } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -35,18 +36,18 @@ import {
   ConfirmationNumber,
 } from "@mui/icons-material";
 import UserManagement from "./userManagement";
-import TokenView from "./token";
+import TokenView from "../Doctor/token";
 import Stocks from "./stocks";
-import PatientDiagnosis from "./PatientDiagnosis";
 import CardView from "./cardItemView";
-// import Login from "../Login";
-
-//import { Switch } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
 
 export default function PermanentDrawerLeft(props) {
+  const name = useSelector((state) => state.user.name);
+  console.log(name);
   let navigate = useNavigate();
+  let location = useLocation();
 
   const LogoutHandler = (e) => {
     e.preventDefault();
@@ -73,7 +74,6 @@ export default function PermanentDrawerLeft(props) {
   const [appbarText, setText] = React.useState("Welcome");
 
   const menuItems = [
-    //["Dashboard", "User Management", "Stocks", "Drafts"
     {
       text: "Dashboard",
       icon: <Dashboard sx={iconTheme} />,
@@ -94,26 +94,9 @@ export default function PermanentDrawerLeft(props) {
       icon: <Biotech sx={iconTheme} />,
       path: "/admin/cardview",
     },
-    {
-      text: "Token",
-      icon: <ConfirmationNumber sx={iconTheme} />,
-      path: "/admin/tokenview",
-    },
   ];
 
-  // const ProfileHeader = () => {
-  //   return <div>Hello</div>;
-  // };
-
   const routes = [{ path: "/" }];
-  // const useCurrentPath = () => {
-  //   const location = useLocation();
-  //   // const [{ route }] = matchRoutes(routes, location);
-  //   console.log(location);
-  //   const route = "/";
-
-  //   return route;
-  // };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -199,7 +182,14 @@ export default function PermanentDrawerLeft(props) {
         </List>
         <Divider />
 
-        <List sx={{ paddingRight: 2, paddingTop: 30 }}>
+        <List
+          sx={{
+            height: "100%",
+            paddingRight: 2,
+            paddingTop: "145%",
+            alignContent: "baseline",
+          }}
+        >
           <ListItem
             button
             key={"Logout"}
@@ -233,18 +223,19 @@ export default function PermanentDrawerLeft(props) {
         }}
       >
         <Toolbar />
-        <Box className='main-content'></Box>
+        <Box className='main-content'>
+          {location.pathname == "/" ? (
+            <Navigate to='/admin/cardview' state={{ from: location }} replace />
+          ) : (
+            ""
+          )}
+        </Box>
 
         <Routes>
           <Route index path='/admin/cardview' element={<CardView />} />
           <Route path='/admin/usermanagement' element={<UserManagement />} />
           <Route path='/admin/tokenview' element={<TokenView />} />
           <Route path='/admin/stocks' element={<Stocks />} />
-          <Route
-            path='/admin/patientdiagnosis'
-            element={<PatientDiagnosis />}
-          />
-          <Route path='/admin/tokenview/*' element={<PatientDiagnosis />} />
         </Routes>
       </Box>
       <Outlet />

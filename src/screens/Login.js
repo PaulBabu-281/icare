@@ -90,6 +90,7 @@ function Login({ LoginDetail, error }) {
               />
 
               <Button
+                type='submit'
                 variant='contained'
                 style={textFieldStyle}
                 onClick={SubmitHandler}

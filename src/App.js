@@ -109,7 +109,7 @@ function App() {
         />
       )}
       <Routes>
-        <Route path='/login' element={<Login />} />
+        <Route path='/login' element={<Login LoginDetail={LoginDetail} />} />
         {/* <Route exact path='/admin' element={<Admin />} /> */}
         {/* <Route path='/admin/cardview' element={<CardView />} />
         <Route path='/admin/usermanagement' element={<UserManagement />} />

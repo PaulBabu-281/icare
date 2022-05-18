@@ -22,14 +22,16 @@ const dataArr = [
     count: "25",
   },
 ];
-const card = (data) => {
+const card = (data, i) => {
   return (
     <React.Fragment>
       <CardContent>
         <Typography variant='h5' component='div'>
           {data.heading}
         </Typography>
-        <Typography variant='body2'>{data.count}</Typography>
+        <Typography variant='body2' key={i}>
+          {data.count}
+        </Typography>
       </CardContent>
       <CardActions>
         <Button size='small'>Learn More</Button>
@@ -38,24 +40,16 @@ const card = (data) => {
   );
 };
 
-// export default function OutlinedCard() {
-//   return (
-//     <Box sx={{ minWidth: 275 }}>
-//       <Card variant="outlined">{card}</Card>
-//     </Box>
-//   );
-// }
-
 function DashboardView() {
   return (
     <div style={{ height: 400, width: "100%" }}>
       <Grid container direction='column'>
         today
         <Grid container direction='row'>
-          {dataArr.map((items) => (
+          {dataArr.map((items, i) => (
             <Grid item>
               <Box sx={{ minWidth: 275 }}>
-                <Card variant='outlined'>{card(items)}</Card>
+                <Card variant='outlined'>{card(items, i)}</Card>
               </Box>
             </Grid>
           ))}

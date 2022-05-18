@@ -2,6 +2,7 @@ import * as React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid } from "@mui/x-data-grid";
+
 // input dialog
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -9,6 +10,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+
 // input dialogx
 import {
   GridActionsCellItem,
@@ -21,6 +23,8 @@ import {
   randomUpdatedDate,
 } from "@mui/x-data-grid-generator";
 import { Box, Button, Grid, Slide } from "@mui/material";
+
+// icons
 import {
   AccountCircle,
   Add,
@@ -31,6 +35,10 @@ import {
   RestartAlt,
 } from "@mui/icons-material";
 
+//axios import
+import axios from "axios";
+
+// transition effect
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
 });
@@ -44,9 +52,204 @@ export default function UserManagement() {
     setOpen(true);
   };
 
+  const SubmitHandler = () => {
+    setOpen(false);
+    console.log(userInfo);
+    const instance = axios.create({ baseURL: "http://localhost:3000" });
+    //web request
+    // axios({
+    //   method: "post",
+    //   url: "localhost:3000/user/signup",
+    //   data: {
+    //     user_name: userInfo.user_name,
+    //     user_mail: userInfo.user_mail,
+    //     user_id: userInfo.user_id,
+    //     finger_id: userInfo.finger_id,
+    //     user_role: userInfo.user_role,
+    //     user_number: userInfo.user_number,
+    //     user_address: userInfo.user_address,
+    //   },
+    // })
+    //   .then(function (response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
+    instance
+      .post("/user/signup", {
+        user_name: userInfo.user_name,
+        user_mail: userInfo.user_mail,
+        user_id: userInfo.user_id,
+        finger_id: userInfo.finger_id,
+        user_role: userInfo.user_role,
+        user_number: userInfo.user_number,
+        user_address: userInfo.user_address,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
+
+  const [userInfo, addUserinfo] = React.useState({
+    user_name: "",
+    user_mail: "",
+    user_id: "",
+    finger_id: "",
+    user_role: "",
+    user_number: "",
+    user_address: "",
+  });
+
+  // Dialog Menu
+  const DialogAddMenu = () => {
+    return (
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+        <DialogTitle>Add User</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Fill Fields</DialogContentText>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <TextField
+              autoFocus
+              onChange={(e) =>
+                addUserinfo({ ...userInfo, user_name: e.target.value })
+              }
+              value={userInfo.user_name}
+              margin='dense'
+              id='user_name'
+              label='Name'
+              type='text'
+              fullWidth
+              variant='standard'
+            />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <Email sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <TextField
+              autoFocus
+              onChange={(e) =>
+                addUserinfo({ ...userInfo, user_mail: e.target.value })
+              }
+              value={userInfo.user_mail}
+              margin='dense'
+              id='user_mail'
+              label='Email'
+              type='email'
+              fullWidth
+              variant='standard'
+            />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <SentimentVerySatisfied
+              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+            />
+            <TextField
+              onChange={(e) =>
+                addUserinfo({ ...userInfo, user_id: e.target.value })
+              }
+              value={userInfo.user_id}
+              autoFocus
+              margin='dense'
+              id='user_id'
+              label='UserID'
+              type='text'
+              fullWidth
+              variant='standard'
+            />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <SentimentVerySatisfied
+              sx={{ color: "action.active", mr: 1, my: 0.5 }}
+            />
+            <TextField
+              autoFocus
+              onChange={(e) =>
+                addUserinfo({ ...userInfo, finger_id: e.target.value })
+              }
+              value={userInfo.finger_id}
+              margin='dense'
+              id='finger_id'
+              label='finger_id'
+              type='text'
+              fullWidth
+              variant='standard'
+            />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <MedicalServices sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <TextField
+              autoFocus
+              onChange={(e) =>
+                addUserinfo({ ...userInfo, user_role: e.target.value })
+              }
+              value={userInfo.user_role}
+              margin='dense'
+              id='user_role'
+              label='Role'
+              type='text'
+              fullWidth
+              variant='standard'
+            />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <MedicalServices sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <TextField
+              autoFocus
+              onChange={(e) =>
+                addUserinfo({ ...userInfo, user_number: e.target.value })
+              }
+              value={userInfo.user_number}
+              margin='dense'
+              id='user_number'
+              label='Number'
+              type='text'
+              fullWidth
+              variant='standard'
+            />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <Password sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <TextField
+              autoFocus
+              onChange={(e) =>
+                addUserinfo({ ...userInfo, user_address: e.target.value })
+              }
+              value={userInfo.user_address}
+              margin='dense'
+              id='user_address'
+              label='Address'
+              type='text'
+              fullWidth
+              variant='standard'
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button color='error' onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button type='submit' onClick={SubmitHandler}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
   // input dialog
 
   return (
@@ -88,97 +291,8 @@ export default function UserManagement() {
         >
           Add
         </Button>
-
-        <Dialog
-          fullScreen
-          open={open}
-          onClose={handleClose}
-          TransitionComponent={Transition}
-        >
-          <DialogTitle>Add User</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Fill Fields</DialogContentText>
-            {/* {textFieldModified(
-              {
-                id: "name",
-                label: "Name",
-                type: "text",
-                icon: "AccountCircle",
-              }
-              //   { ...props }
-            )} */}
-            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-              <TextField
-                autoFocus
-                margin='dense'
-                id='name'
-                label='Name'
-                type='text'
-                fullWidth
-                variant='standard'
-              />
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <Email sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-              <TextField
-                autoFocus
-                margin='dense'
-                id='email'
-                label='Email'
-                type='email'
-                fullWidth
-                variant='standard'
-              />
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <SentimentVerySatisfied
-                sx={{ color: "action.active", mr: 1, my: 0.5 }}
-              />
-              <TextField
-                autoFocus
-                margin='dense'
-                id='age'
-                label='Age'
-                type='number'
-                fullWidth
-                variant='standard'
-              />
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <MedicalServices
-                sx={{ color: "action.active", mr: 1, my: 0.5 }}
-              />
-              <TextField
-                autoFocus
-                margin='dense'
-                id='post'
-                label='Postion'
-                type='text'
-                fullWidth
-                variant='standard'
-              />
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <Password sx={{ color: "action.active", mr: 1, my: 0.5 }} />
-              <TextField
-                autoFocus
-                margin='dense'
-                id='password'
-                label='Password'
-                type='password'
-                fullWidth
-                variant='standard'
-              />
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button color='error' onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button onClick={handleClose}>Save</Button>
-          </DialogActions>
-        </Dialog>
+        {/* dialog box  */}
+        {DialogAddMenu()}
       </Grid>
     </Grid>
   );

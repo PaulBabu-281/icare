@@ -6,6 +6,7 @@ import {
   // Router,
   Routes,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -28,16 +29,20 @@ import {
   Vaccines,
   LocalHospital,
   Science,
+  ConfirmationNumber,
 } from "@mui/icons-material";
 import DashboardView from "./cardItemView";
 import UserManagement from "./userManagement";
 import Operations from "./Operations";
+import PatientDiagnosis from "./PatientDiagnosis";
+import TokenView from "./token";
 //import { Switch } from "@mui/material";
 
 const drawerWidth = 240;
 
 export default function Doctor(props) {
   let navigate = useNavigate();
+  let location = useLocation();
   const LogoutHandler = (e) => {
     e.preventDefault();
 
@@ -83,6 +88,11 @@ export default function Doctor(props) {
       text: "Lab Result",
       icon: <Science sx={iconTheme} />,
       path: "/",
+    },
+    {
+      text: "Token",
+      icon: <ConfirmationNumber sx={iconTheme} />,
+      path: "/doctor/tokenview",
     },
   ];
 
@@ -173,7 +183,7 @@ export default function Doctor(props) {
         </List>
         <Divider />
 
-        <List sx={{ paddingRight: 2, paddingTop: 40 }}>
+        <List sx={{ paddingRight: 2, paddingTop: "100%" }}>
           <ListItem
             button
             key={"Logout"}
@@ -201,7 +211,11 @@ export default function Doctor(props) {
         component='main'
         sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
       >
-        {console.log(useLocation())}
+        {location.pathname == "/" ? (
+          <Navigate to='doctor/dashboard' state={{ from: location }} replace />
+        ) : (
+          ""
+        )}
         <Toolbar />
         {/* <Router>
           <Routes>
@@ -214,6 +228,11 @@ export default function Doctor(props) {
           <Route path='doctor/dashboard' element={<DashboardView />} />
           <Route path='doctor/usermanagement' element={<UserManagement />} />
           <Route path='doctor/operations' element={<Operations />} />
+          <Route path='doctor/tokenview' element={<TokenView />} />
+          <Route
+            path='doctor/patientdiagnosis'
+            element={<PatientDiagnosis />}
+          />
         </Routes>
       </Box>
     </Box>
