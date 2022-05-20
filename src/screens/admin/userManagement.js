@@ -33,10 +33,17 @@ import {
   Password,
   SentimentVerySatisfied,
   RestartAlt,
+  Fingerprint,
+  RememberMe,
 } from "@mui/icons-material";
 
 //axios import
 import axios from "axios";
+
+//snackbar
+
+// https://github.com/iamhosseindhv/notistack/issues/30
+import toast from "../../components/snackbar";
 
 // transition effect
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -52,30 +59,15 @@ export default function UserManagement() {
     setOpen(true);
   };
 
+  // function errorVal(error) {
+  //   console.log("Invalid success: ", error);
+  //   snackbar("saved", "success");
+  //   // return Promise.reject('Invalid!');
+  // }
   const SubmitHandler = () => {
     setOpen(false);
-    console.log(userInfo);
+    //console.log(userInfo);
     const instance = axios.create({ baseURL: "http://localhost:3000" });
-    //web request
-    // axios({
-    //   method: "post",
-    //   url: "localhost:3000/user/signup",
-    //   data: {
-    //     user_name: userInfo.user_name,
-    //     user_mail: userInfo.user_mail,
-    //     user_id: userInfo.user_id,
-    //     finger_id: userInfo.finger_id,
-    //     user_role: userInfo.user_role,
-    //     user_number: userInfo.user_number,
-    //     user_address: userInfo.user_address,
-    //   },
-    // })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
 
     instance
       .post("/user/signup", {
@@ -87,17 +79,27 @@ export default function UserManagement() {
         user_number: userInfo.user_number,
         user_address: userInfo.user_address,
       })
-      .then(function (response) {
-        console.log(response);
+      .then((response) => {
+        toast.success("Saved");
+        // snackbar("saved", "success");
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((error) => {
+        toast.error("something went wrong!");
       });
   };
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  //snackbar 2
+
+  // const { enqueueSnackbar } = useSnackbar();
+  // const snackbar = (message, variant) => () => {
+  //   console.log(message, variant);
+  //   // variant could be success, error, warning, info, or default
+  //   enqueueSnackbar(message, { variant });
+  // };
 
   const [userInfo, addUserinfo] = React.useState({
     user_name: "",
@@ -172,9 +174,7 @@ export default function UserManagement() {
             />
           </Box>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            <SentimentVerySatisfied
-              sx={{ color: "action.active", mr: 1, my: 0.5 }}
-            />
+            <Fingerprint sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <TextField
               autoFocus
               onChange={(e) =>
@@ -183,7 +183,7 @@ export default function UserManagement() {
               value={userInfo.finger_id}
               margin='dense'
               id='finger_id'
-              label='finger_id'
+              label='Finger_id'
               type='text'
               fullWidth
               variant='standard'
@@ -206,7 +206,7 @@ export default function UserManagement() {
             />
           </Box>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            <MedicalServices sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <RememberMe sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <TextField
               autoFocus
               onChange={(e) =>
@@ -297,37 +297,6 @@ export default function UserManagement() {
     </Grid>
   );
 }
-
-// const textFieldModified = ({
-//   id = "name",
-//   label = "Email",
-//   type = "number",
-//   icon = "Add",
-// } = {}) => {
-//   return (
-//     <TextField
-//       autoFocus
-//       margin='dense'
-//       id={id}
-//       label={label}
-//       type={type}
-//       fullWidth
-//       variant='standard'
-//       InputProps={{
-//         startAdornment: (
-//           <InputAdornment position='start'>{icon}</InputAdornment>
-//         ),
-//       }}
-//     />
-//   );
-// };
-// const addButton = () => {
-//   return (
-//     <Button variant='outlined' startIcon={<Add />}>
-//       Add
-//     </Button>
-//   );
-// };
 
 const columns = [
   { field: "name", headerName: "Name", width: 160, editable: true },

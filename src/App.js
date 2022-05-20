@@ -14,6 +14,8 @@ import {
 // import PatientDiagnosis from "./screens/admin/PatientDiagnosis";
 import Doctor from "./screens/Doctor/Doctor";
 
+import toast from "./components/snackbar";
+
 function App() {
   const LOCAL_STORAGE_KEY_USER = "user";
   const LOCAL_STORAGE_KEY_PASSWORD = "password";
@@ -52,7 +54,7 @@ function App() {
   // const [LoggedInUser, setLoggedInUser] = useState("");
   // const [error, setError] = useState("");
   //const [success, setSuccess] = useState(false);
-
+  var setLoggedInUser = false;
   const LoginDetail = (details) => {
     //  console.log(details);
 
@@ -61,17 +63,27 @@ function App() {
     // }))
 
     for (var i = 0; i < users.length; i++) {
-      if (users[i].userid == details.userid) {
+      if (
+        users[i].userid == details.userid &&
+        users[i].password == details.password
+      ) {
         setisLogedin(true);
+        //toast.success("Logged in");
         // setLoggedInUser(details.userid);
+        setLoggedInUser = true;
         setUserid(details.userid);
         setPassword(details.password);
         localStorage.setItem(LOCAL_STORAGE_KEY_USER, details.userid);
         localStorage.setItem(LOCAL_STORAGE_KEY_PASSWORD, details.password);
         console.log("Logged In");
+        console.log(userid);
       }
     }
-    console.log(isLogedin);
+    console.log(setLoggedInUser);
+    if (!setLoggedInUser) toast.error("incorrect userid or password");
+    // if (!isLogedin) {
+    //   toast.error("incorrect userid or password");
+    // }
 
     // if (isLogedin) {
     //   //setUser({ ...user, name: details.userid, password: details.password });
@@ -93,7 +105,6 @@ function App() {
   // const successHandler = (success) => {
   //   setSuccess(...success, success);
   // };
-
   return (
     <div style={{ height: "100%" }}>
       {isLogedin !== false ? (

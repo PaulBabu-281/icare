@@ -40,6 +40,7 @@ import TokenView from "../Doctor/token";
 import Stocks from "./stocks";
 import CardView from "./cardItemView";
 import { useSelector } from "react-redux";
+import { SnackbarProvider } from "notistack";
 
 const drawerWidth = 240;
 
@@ -230,13 +231,14 @@ export default function PermanentDrawerLeft(props) {
             ""
           )}
         </Box>
-
-        <Routes>
-          <Route index path='/admin/cardview' element={<CardView />} />
-          <Route path='/admin/usermanagement' element={<UserManagement />} />
-          <Route path='/admin/tokenview' element={<TokenView />} />
-          <Route path='/admin/stocks' element={<Stocks />} />
-        </Routes>
+        <SnackbarProvider maxSnack={3}>
+          <Routes>
+            <Route index path='/admin/cardview' element={<CardView />} />
+            <Route path='/admin/usermanagement' element={<UserManagement />} />
+            <Route path='/admin/tokenview' element={<TokenView />} />
+            <Route path='/admin/stocks' element={<Stocks />} />
+          </Routes>
+        </SnackbarProvider>
       </Box>
       <Outlet />
     </Box>
