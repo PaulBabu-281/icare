@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import tokenSlice from "./tokenSlice";
 import userSlice from "./userSlice";
 //import userReducer from "./userSlice";
 
@@ -19,6 +20,7 @@ import userSlice from "./userSlice";
 export const store = configureStore({
   reducer: {
     user: userSlice,
+    token: tokenSlice,
     // preloadedState,
   },
 });

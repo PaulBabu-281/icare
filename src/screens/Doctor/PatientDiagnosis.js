@@ -5,6 +5,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Button, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -15,6 +16,8 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function PatientDiagnosis() {
+  const patients = useSelector((state) => state.token);
+  // console.log(patients);
   const [count, setCount] = useState(0);
   const nextToken = () => {
     setCount(count + 1);
@@ -23,40 +26,40 @@ export default function PatientDiagnosis() {
     setCount(count - 1);
   };
 
-  const patients = [
-    {
-      name: "Raju Bhai",
-      tokenNo: 1,
-      age: 35,
-      weight: 75,
-      temperature: 45,
-      BPM: 77,
-    },
-    {
-      name: "Rocky Bhai",
-      tokenNo: 2,
-      age: 28,
-      weight: 75,
-      temperature: 45,
-      BPM: 77,
-    },
-    {
-      name: "Megatron",
-      tokenNo: 3,
-      age: 22,
-      weight: 75,
-      temperature: 35,
-      BPM: 77,
-    },
-    {
-      name: "Go Back",
-      tokenNo: 3,
-      age: 22,
-      weight: 75,
-      temperature: 35,
-      BPM: 77,
-    },
-  ];
+  // const patients = [
+  //   {
+  //     name: "Raju Bhai",
+  //     tokenNo: 1,
+  //     age: 35,
+  //     weight: 75,
+  //     temperature: 45,
+  //     BPM: 77,
+  //   },
+  //   {
+  //     name: "Rocky Bhai",
+  //     tokenNo: 2,
+  //     age: 28,
+  //     weight: 75,
+  //     temperature: 45,
+  //     BPM: 77,
+  //   },
+  //   {
+  //     name: "Megatron",
+  //     tokenNo: 3,
+  //     age: 22,
+  //     weight: 75,
+  //     temperature: 35,
+  //     BPM: 77,
+  //   },
+  //   {
+  //     name: "Go Back",
+  //     tokenNo: 3,
+  //     age: 22,
+  //     weight: 75,
+  //     temperature: 35,
+  //     BPM: 77,
+  //   },
+  // ];
   return (
     <Box sx={{ width: "100%" }}>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>

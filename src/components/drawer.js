@@ -46,7 +46,7 @@ const drawerWidth = 240;
 
 export default function PermanentDrawerLeft(props) {
   const name = useSelector((state) => state.user.name);
-  console.log("name from redux " + name);
+  console.log(name);
   let navigate = useNavigate();
   let location = useLocation();
 
@@ -231,14 +231,6 @@ export default function PermanentDrawerLeft(props) {
             ""
           )}
         </Box>
-        <SnackbarProvider maxSnack={3}>
-          <Routes>
-            <Route index path='/admin/cardview' element={<CardView />} />
-            <Route path='/admin/usermanagement' element={<UserManagement />} />
-            <Route path='/admin/tokenview' element={<TokenView />} />
-            <Route path='/admin/stocks' element={<Stocks />} />
-          </Routes>
-        </SnackbarProvider>
       </Box>
       <Outlet />
     </Box>

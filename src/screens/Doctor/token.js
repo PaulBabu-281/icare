@@ -14,13 +14,15 @@ import {
 import { Grid } from "@mui/material";
 import { Visibility } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function TokenView() {
+  const patients = useSelector((state) => state.token);
   return (
     <Grid container direction='column' alignItems={"center"}>
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
-          rows={rows}
+          rows={patients}
           columns={columns}
           checkboxSelection
           initialState={{
@@ -63,7 +65,7 @@ const columns = [
     editable: false,
   },
   {
-    field: "pulse",
+    field: "BPM",
     headerName: "Pulse rate",
     type: "number",
     width: 150,
