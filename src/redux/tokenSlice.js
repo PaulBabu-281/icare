@@ -9,6 +9,7 @@ const initialState = [
     weight: 75,
     temperature: 45,
     BPM: 77,
+    gender: "M",
   },
   {
     id: 2,
@@ -18,6 +19,7 @@ const initialState = [
     weight: 75,
     temperature: 45,
     BPM: 77,
+    gender: "M",
   },
   {
     id: 3,
@@ -27,6 +29,7 @@ const initialState = [
     weight: 75,
     temperature: 35,
     BPM: 77,
+    gender: "f",
   },
   {
     id: 4,
@@ -36,6 +39,7 @@ const initialState = [
     weight: 75,
     temperature: 35,
     BPM: 77,
+    gender: "F",
   },
 ];
 

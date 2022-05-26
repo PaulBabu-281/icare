@@ -1,10 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  name: "Rahul",
-  role: "Doctor",
-  age: "32",
-};
+const initialState = [
+  {
+    name: "Rahul",
+    role: "Doctor",
+    age: "32",
+  },
+  {
+    name: "Sam",
+    role: "Admin",
+    age: "32",
+  },
+];
 
 export const userSlice = createSlice({
   //name of the state

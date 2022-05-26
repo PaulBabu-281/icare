@@ -90,6 +90,7 @@ export default function UserManagement() {
 
   const handleClose = () => {
     setOpen(false);
+    toast.error("Action Canceled");
   };
 
   //snackbar 2
