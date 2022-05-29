@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { DataGrid ,GridApi, GridCellValue} from "@mui/x-data-grid";
-import Button from '@mui/material/Button';
+import { DataGrid, GridApi, GridCellValue } from "@mui/x-data-grid";
+import Button from "@mui/material/Button";
 
 import {
   GridActionsCellItem,
@@ -11,7 +11,7 @@ import { Grid } from "@mui/material";
 import { Visibility } from "@mui/icons-material";
 import { generatePath, Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {updateSelected } from '../../redux/tokenSelectSlice';
+import { updateSelected } from "../../redux/tokenSelectSlice";
 
 export default function TokenView() {
   let navigate = useNavigate();
@@ -19,14 +19,12 @@ export default function TokenView() {
   const token = useSelector((state) => state.selectedToken);
   console.log(token);
 
-  const navigateToTokenDetails= ()=>{
-    navigate( "/doctor/patientdiagnosis/", { replace: true });
-
-  }
+  const navigateToTokenDetails = () => {
+    navigate("/doctor/patientdiagnosis/", { replace: true });
+  };
 
   const patients = useSelector((state) => state.token);
   const dispatch = useDispatch();
- 
 
   const columns = [
     {
@@ -61,37 +59,30 @@ export default function TokenView() {
       editable: false,
     },
     {
-      field: 'action',
-      headerName: 'Action',
+      field: "action",
+      headerName: "Action",
       sortable: false,
       renderCell: (params) => {
         const onClick = (e) => {
-         
           e.stopPropagation(); // don't select this row after clicking
-  
+
           const api: GridApi = params.api;
           const thisRow: Record<string, GridCellValue> = {};
-          
-  
+
           api
             .getAllColumns()
-            .filter((c) => c.field !== '__check__' && !!c)
+            .filter((c) => c.field !== "__check__" && !!c)
             .forEach(
-              (c) => (thisRow[c.field] = params.getValue(params.id, c.field)),
+              (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
             );
-            //generatePath("/users/:id", { id: 42 });
-            console.log(thisRow);
-            dispatch(updateSelected(Number(thisRow.tokenNo)))
+          //generatePath("/users/:id", { id: 42 });
+          console.log(thisRow);
+          dispatch(updateSelected(Number(thisRow.tokenNo)));
 
-
-            navigateToTokenDetails();
-           
-             //<Navigate to= {generatePath("/doctor/patientdiagnosis/", { tokenNo: thisRow.tokenNo })} state={{ from: window.location }} replace />;
-            
-          //return alert(JSON.stringify(thisRow, null, 4));
+          navigateToTokenDetails();
         };
-  
-        return <Button  onClick={onClick}>{<Visibility />}</Button>;
+
+        return <Button onClick={onClick}>{<Visibility />}</Button>;
       },
     },
     // {
@@ -103,32 +94,28 @@ export default function TokenView() {
     //     <Link to={"/doctor/patientdiagnosis"}>
     //       <GridActionsCellItem icon={<Visibility />} label='Show' />,
     //     </Link>,
-  
+
     //     // <GridActionsCellItem icon={<DeleteIcon />} label='Delete' />,
     //     // <GridActionsCellItem icon={<RestartAlt />} label='Reset Password' />,
     //   ],
     // },
   ];
 
-
   return (
-    <Grid container direction='column' alignItems={"center"}>
+    <Grid container direction="column" alignItems={"center"}>
       <div style={{ height: 400, width: "100%" }}>
-    
         <DataGrid
           //   row.dataset.id
           rows={patients}
           columns={columns}
           //checkboxSelection
           hideFooterPagination
-         
           initialState={{
             pinnedColumns: {
               left: [GRID_CHECKBOX_SELECTION_COL_DEF.field],
               right: ["actions"],
             },
           }}
-          
           onSelectionModelChange={(ids) => {
             const selectedIDs = new Set(ids);
             // const selectedRowData = patients.filter((row) =>
@@ -136,9 +123,7 @@ export default function TokenView() {
             // );
             console.log(selectedIDs);
           }}
-          
         />
-         
       </div>
       <Grid
         item
@@ -151,8 +136,4 @@ export default function TokenView() {
       ></Grid>
     </Grid>
   );
-  
 }
-
-
-

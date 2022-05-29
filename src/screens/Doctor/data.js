@@ -1,6 +1,8 @@
 import Delete from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { delPrescription } from "../../redux/prescrptionSlice";
 
 export const afterBefore = [
   { label: "After food" },
@@ -67,11 +69,29 @@ export const columns = [
   {
     field: "Action",
     headerName: "Action",
-    width: 200,
-    editable: true,
-    renderCell: () => {
+    width: 125,
+    editable: false,
+    renderCell: (params) => {
+      const dispatch = useDispatch();
+      const onClick = (e) => {
+        e.stopPropagation(); // don't select this row after clicking
+
+        const api: GridApi = params.api;
+        const thisRow: Record<string, GridCellValue> = {};
+
+        api
+          .getAllColumns()
+          .filter((c) => c.field !== "__check__" && !!c)
+          .forEach(
+            (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
+          );
+        //generatePath("/users/:id", { id: 42 });
+        console.log(thisRow);
+        dispatch(delPrescription(thisRow.id + 1));
+      };
+
       return (
-        <Button>
+        <Button onClick={onClick}>
           <Delete />
         </Button>
       );

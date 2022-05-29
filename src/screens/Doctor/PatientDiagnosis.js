@@ -3,19 +3,24 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Autocomplete, Button, TextField, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import { afterBefore, Drug, Duration, Freq, columns } from "./data";
+import { updatePrepList } from "../../redux/prescrptionSlice";
 
 export default function PatientDiagnosis() {
+  //State from redux store
   const patients = useSelector((state) => state.token);
   const tokenSelected = useSelector((state) => state.selectedToken);
   const Doctor = useSelector((state) => state.user);
+  const prescriptionState = useSelector((state) => state.savePrescrption);
+
+  const dispatch = useDispatch();
 
   // console.log( "in daiagno");
   //console.log(tokenSelected.value);
   const [count, setCount] = useState(tokenSelected.value - 1 || 0);
-  const [prepcount, setPrepCount] = useState(Number(1));
+  const [prepcount, setPrepCount] = useState(Number(-1));
   //setCount(tokenSelected.value);
   const nextToken = () => {
     setCount(count + 1);
@@ -30,27 +35,39 @@ export default function PatientDiagnosis() {
     duration: "",
     inst: "",
     remaks: "",
-    id: "",
+    id: 0,
   });
-  const [prescriptionReal, addPrescriptionReal] = React.useState([]);
+  const [prescriptionReal, addPrescriptionReal] = React.useState([
+    {
+      Drug: "",
+      freq: "",
+      duration: "",
+      inst: "",
+      remaks: "",
+      id: "",
+    },
+  ]);
 
   const SubmitHandler = (e) => {
     let num = prepcount;
     num = num + 1;
+
     addPrescription({ ...prescription, id: num });
-    e.preventDefault();
-    console.log("count");
-    console.log(num);
+    //e.preventDefault();
+
     setPrepCount(prepcount + 1);
     let newPrep = [...prescriptionReal];
-    newPrep[num] = prescription;
+    newPrep.push(prescription);
     addPrescriptionReal(newPrep);
-    console.log("input prep");
-    console.log(prescription);
-    console.log("temp prep ");
-    console.log(newPrep);
-    console.log(prepcount);
-    console.log(prescriptionReal);
+    // console.log("input prep");
+    // console.log(prescription);
+    // console.log("temp prep ");
+    // console.log(newPrep);
+    // console.log(prepcount);
+    // console.log(prescriptionReal);
+    dispatch(updatePrepList(prescription));
+    // console.log("From Store");
+    console.log(prescriptionState);
 
     // LoginDetail(details);
   };
@@ -231,9 +248,9 @@ export default function PatientDiagnosis() {
           marginRight={10}
         >
           {/* DATA TABLE */}
-          <div style={{ height: 300, width: "100%" }}>
+          <div style={{ height: 300, width: "110%" }}>
             <DataGrid
-              rows={prescriptionReal}
+              rows={prescriptionState}
               columns={columns}
               pageSize={5}
               rowsPerPageOptions={[5]}
