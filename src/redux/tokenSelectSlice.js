@@ -12,7 +12,8 @@ export const selectedToken = createSlice({
     saveDetails: (state = { initialState }, action) => {
       state.value = action.payload.value;
     },
-    updateSelected: (state, action: PayloadAction<number>) => {
+    // : PayloadAction<number>
+    updateSelected: (state, action) => {
       state.value = action.payload;
     },
   },

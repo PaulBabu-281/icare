@@ -1,5 +1,5 @@
 import Delete from "@mui/icons-material/Delete";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { delPrescription } from "../../redux/prescrptionSlice";
@@ -76,8 +76,9 @@ export const columns = [
       const onClick = (e) => {
         e.stopPropagation(); // don't select this row after clicking
 
-        const api: GridApi = params.api;
-        const thisRow: Record<string, GridCellValue> = {};
+        const api = params.api;
+        const thisRow = {};
+        //: Record<string, GridCellValue> =
 
         api
           .getAllColumns()
@@ -98,3 +99,7 @@ export const columns = [
     },
   },
 ];
+
+// export const vertLine = () => {
+//   return <Divider color="black" variant="middle" orientation="vertical" />;
+// };

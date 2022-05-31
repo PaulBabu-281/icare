@@ -2,11 +2,24 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
-import { Autocomplete, Button, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import { afterBefore, Drug, Duration, Freq, columns } from "./data";
 import { updatePrepList } from "../../redux/prescrptionSlice";
+
+import "./doctor.css";
+import { styled } from "@mui/material/styles";
+
+const vertLine = () => {
+  return <Divider color="black" variant="middle" orientation="vertical" />;
+};
 
 export default function PatientDiagnosis() {
   //State from redux store
@@ -84,6 +97,34 @@ export default function PatientDiagnosis() {
   //   },
   // ];
 
+  const box = () => {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          width: "fit-content",
+          border: (theme) => `1px solid ${theme.palette.divider}`,
+          borderRadius: 1,
+          bgcolor: "background.paper",
+          color: "text.secondary",
+          "& svg": {
+            m: 1.5,
+          },
+          "& hr": {
+            mx: 0.5,
+          },
+        }}
+      ></Box>
+    );
+  };
+
+  const Div = styled("div")(({ theme }) => ({
+    ...theme.typography.button,
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(1),
+  }));
+
   return (
     <Box sx={{ width: "100%", height: "100%", marginTop: 5 }}>
       <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
@@ -103,8 +144,29 @@ export default function PatientDiagnosis() {
           >
             Back
           </Button>
-
+          {/* <Box
+            sx={{
+              padding: 2,
+              display: "flex",
+              alignItems: "center",
+              width: "fit-content",
+              border: (theme) => `1px solid ${theme.palette.divider}`,
+              borderRadius: 1,
+              bgcolor: "background.paper",
+              color: "black",
+              "& svg": {
+                m: 1.5,
+              },
+              "& hr": {
+                mx: 1.5,
+              },
+            }}
+          > */}
           <Typography>Patient Name : {patients[count].name}</Typography>
+          {/* </Box> */}
+
+          <Divider variant="middle" orientation="vertical" />
+
           <Typography>Token Number : {patients[count].tokenNo}</Typography>
 
           <Button
@@ -118,6 +180,7 @@ export default function PatientDiagnosis() {
             Next
           </Button>
         </Grid>
+        <Divider variant="middle" />
         <Grid
           container
           direction="row"
@@ -126,12 +189,16 @@ export default function PatientDiagnosis() {
           margin={3}
         >
           <Typography> Age: {patients[count].age}</Typography>
+          <Divider variant="middle" orientation="vertical" />
           <Typography>Weight : {patients[count].weight}</Typography>
+          <Divider variant="middle" orientation="vertical" />
           <Typography>
             Body Temperature : {patients[count].temperature}
           </Typography>
+          <Divider variant="middle" orientation="vertical" />
           <Typography>BPM : {patients[count].BPM}</Typography>{" "}
         </Grid>
+        <Divider variant="middle" />
         <Grid
           container
           direction="row"
@@ -140,6 +207,7 @@ export default function PatientDiagnosis() {
           margin={4}
         >
           <Typography> Gender: {patients[count].gender}</Typography>
+          <Divider variant="middle" orientation="vertical" />
           <Typography>Doctor : Dr.{Doctor[1].name}</Typography>
 
           <TextField

@@ -23,17 +23,20 @@ const dataArr = [
 ];
 const card = (data) => {
   return (
-    <React.Fragment>
-      <CardContent>
-        <Typography variant='h5' component='div'>
-          {data.heading}
-        </Typography>
-        <Typography variant='body2'>{data.count}</Typography>
-      </CardContent>
-      <CardActions>
-        <Button size='small'>Learn More</Button>
-      </CardActions>
-    </React.Fragment>
+    <Grid container sx={{ margin: 2, width: 300 }}>
+      <React.Fragment>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            {data.heading} :
+            <Typography variant="body2">{data.count}</Typography>
+          </Typography>
+        </CardContent>
+
+        <CardActions>
+          <Button size="small">Learn More</Button>
+        </CardActions>
+      </React.Fragment>
+    </Grid>
   );
 };
 
@@ -47,14 +50,20 @@ const card = (data) => {
 
 function DashboardView() {
   return (
-    <Grid container direction='column'>
-      today
-      <Grid container direction='row'>
+    <Grid container direction="column">
+      Today
+      <Grid
+        container
+        direction="row"
+        spacing={2}
+        //justifyContent="space-evenly"
+        alignItems="flex-start"
+      >
         {dataArr.map((items) => (
           <Grid item>
             {" "}
             <Box sx={{ minWidth: 275 }}>
-              <Card variant='outlined'>{card(items)}</Card>
+              <Card variant="outlined">{card(items)}</Card>
             </Box>
           </Grid>
         ))}
