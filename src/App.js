@@ -16,9 +16,14 @@ import Doctor from "./screens/Doctor/Doctor";
 
 import toast from "./components/snackbar";
 
+import { Helmet } from "react-helmet";
+
 function App() {
+  const TITLE = "iCare";
+
   const LOCAL_STORAGE_KEY_USER = "user";
   const LOCAL_STORAGE_KEY_PASSWORD = "password";
+
   const users = [
     {
       userid: "admin",
@@ -107,6 +112,12 @@ function App() {
   // };
   return (
     <div style={{ height: "100%" }}>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{TITLE}</title>
+        <link rel="canonical" href="http://mysite.com/example" />
+      </Helmet>
+
       {isLogedin !== false ? (
         userid == "admin" ? (
           <Admin LogoutFunc={Logout} />
@@ -120,7 +131,7 @@ function App() {
         />
       )}
       <Routes>
-        <Route path='/login' element={<Login LoginDetail={LoginDetail} />} />
+        <Route path="/login" element={<Login LoginDetail={LoginDetail} />} />
         {/* <Route exact path='/admin' element={<Admin />} /> */}
         {/* <Route path='/admin/cardview' element={<CardView />} />
         <Route path='/admin/usermanagement' element={<UserManagement />} />

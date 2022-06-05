@@ -33,7 +33,6 @@ import {
   Inventory,
   Biotech,
   Logout,
-  ConfirmationNumber,
 } from "@mui/icons-material";
 import UserManagement from "./userManagement";
 import TokenView from "../Doctor/token";
@@ -104,7 +103,7 @@ export default function PermanentDrawerLeft(props) {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
-        position='fixed'
+        position="fixed"
         sx={{
           width: `calc(100% - ${drawerWidth}px)`,
           ml: `${drawerWidth}px`,
@@ -112,7 +111,7 @@ export default function PermanentDrawerLeft(props) {
         }}
       >
         <Toolbar>
-          <Typography variant='h6' noWrap component='div'>
+          <Typography variant="h6" noWrap component="div">
             {appbarText}
           </Typography>
         </Toolbar>
@@ -132,19 +131,30 @@ export default function PermanentDrawerLeft(props) {
             boxSizing: "border-box",
           },
         }}
-        variant='permanent'
-        anchor='left'
+        variant="permanent"
+        anchor="left"
         classes={{ paper: classes.paper }}
       >
         <Toolbar style={{ height: "15%" }}>
           <List sx={{ width: "100%", maxWidth: 360 }}>
-            <ListItem>
+            <ListItem
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                navigate(menuItems[0].path);
+                setText(menuItems[0].text);
+              }}
+            >
               <ListItemAvatar>
                 <Avatar>
-                  <AccountCircle />
+                  <AccountCircle
+                  // style={{ cursor: "pointer" }}
+                  // onClick={() => {
+                  //   navigate(menuItems[0].path);
+                  // }}
+                  />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary='Admin' />
+              <ListItemText primary="Admin" />
             </ListItem>
           </List>
         </Toolbar>
@@ -217,7 +227,7 @@ export default function PermanentDrawerLeft(props) {
       </Drawer>
       <Box
         // className='main-content'
-        component='main'
+        component="main"
         sx={{
           flexGrow: 1,
           bgcolor: "Background.default",
@@ -225,19 +235,19 @@ export default function PermanentDrawerLeft(props) {
         }}
       >
         <Toolbar />
-        <Box className='main-content'>
+        <Box className="main-content">
           {location.pathname == "/" ? (
-            <Navigate to='/admin/cardview' state={{ from: location }} replace />
+            <Navigate to="/admin/cardview" state={{ from: location }} replace />
           ) : (
             ""
           )}
         </Box>
         <SnackbarProvider maxSnack={3}>
           <Routes>
-            <Route index path='/admin/cardview' element={<CardView />} />
-            <Route path='/admin/usermanagement' element={<UserManagement />} />
-            <Route path='/admin/tokenview' element={<TokenView />} />
-            <Route path='/admin/stocks' element={<Stocks />} />
+            <Route index path="/admin/cardview" element={<CardView />} />
+            <Route path="/admin/usermanagement" element={<UserManagement />} />
+            <Route path="/admin/tokenview" element={<TokenView />} />
+            <Route path="/admin/stocks" element={<Stocks />} />
           </Routes>
         </SnackbarProvider>
       </Box>

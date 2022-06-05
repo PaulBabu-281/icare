@@ -1,40 +1,41 @@
-import React from "react";
-import { TextField, Button, Grid, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import { TextField, Button, Grid, Typography, Box } from "@mui/material";
 import background from "../images/login_background.png";
 import { useState } from "react";
+import { AccountCircle, Lock } from "@mui/icons-material";
 //import { textAlign, width } from "@mui/system";
+import { useMediaQuery } from "react-responsive";
 
 const textFieldStyle = {
-  marginBottom: "2em",
-  width: "60%",
+  // marginBottom: "2em",
+  width: "100%",
 };
 
 function Login({ LoginDetail, error }) {
-  //   let success = false;
-  //   state = {
-  //     success: false,
-  //   };
-  //   const changeState = () => {
-  //     this.setState({ success: !success });
-  //   };
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+  const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+  const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
+  const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
 
-  //   const changeFlag = () => {
-  //     changeState();
-  //     this.props.successHandler(this.state);
-  //   };
   const [details, setDetails] = useState({ userid: "", password: "" });
   const SubmitHandler = (e) => {
     e.preventDefault();
     LoginDetail(details);
   };
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+  }, []);
   return (
     <>
-      <form autoComplete='off' onSubmit={SubmitHandler}>
+      <form autoComplete="off" onSubmit={SubmitHandler}>
         <Grid
           container
-          direction='column'
-          alignItems='flex-end'
-          justify='center'
+          direction="column"
+          alignItems="flex-end"
+          justify="center"
           style={{
             //minHeight: "100vh",
             //background: "skyblue",
@@ -43,62 +44,95 @@ function Login({ LoginDetail, error }) {
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             width: "100vw",
-            height: "101vh",
+            height: "105vh",
           }}
           spacing={5}
         >
           <Grid item>
             <Grid
               container
-              direction='column'
+              direction="column"
               alignItems={"center"}
-              justify='center'
+              justify="center"
               style={{ marginRight: "15em", marginTop: "10em" }}
             >
               <Grid item>
                 <Typography
-                  variant='h4'
-                  component='h3'
+                  variant="h4"
+                  component="h3"
                   style={{ marginBottom: "1em" }}
                 >
                   iCare
                 </Typography>
               </Grid>
-
-              <TextField
-                onChange={(e) =>
-                  setDetails({ ...details, userid: e.target.value })
-                }
-                value={details.userid}
-                id='userid'
-                label='User ID'
-                variant='outlined'
-                style={textFieldStyle}
-              />
-
-              <TextField
-                onChange={(e) =>
-                  setDetails({ ...details, password: e.target.value })
-                }
-                value={details.password}
-                id='password'
-                label='Password'
-                type='password'
-                autoComplete='current-password'
-                variant='outlined'
-                style={textFieldStyle}
-              />
-
-              <Button
-                type='submit'
-                variant='contained'
-                style={textFieldStyle}
-                onClick={SubmitHandler}
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems={"center"}
+                style={{
+                  marginBottom: "2em",
+                  marginTop: "1em",
+                  textFieldStyle,
+                }}
+                spacing={4}
               >
-                SIGN IN
-              </Button>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "flex-end",
+                    marginBottom: "2em",
+                  }}
+                >
+                  <AccountCircle
+                    sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                  />
+                  <TextField
+                    onChange={(e) =>
+                      setDetails({ ...details, userid: e.target.value })
+                    }
+                    value={details.userid}
+                    id="userid"
+                    label="User ID"
+                    variant="standard"
+                    style={textFieldStyle}
+                    required
+                  />
+                </Box>
 
-              <Button variant='text' style={{ marginLeft: "28%" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "flex-end",
+                    marginBottom: "2em",
+                  }}
+                >
+                  <Lock sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                  <TextField
+                    onChange={(e) =>
+                      setDetails({ ...details, password: e.target.value })
+                    }
+                    value={details.password}
+                    id="password"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    variant="standard"
+                    style={textFieldStyle}
+                    required
+                  />
+                </Box>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  style={{ width: "50%" }}
+                  onClick={SubmitHandler}
+                >
+                  SIGN IN
+                </Button>
+              </Grid>
+
+              <Button variant="text" style={{ marginLeft: "28%" }}>
                 Reset Password?
               </Button>
             </Grid>

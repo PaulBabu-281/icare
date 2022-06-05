@@ -40,14 +40,6 @@ const card = (data) => {
   );
 };
 
-// export default function OutlinedCard() {
-//   return (
-//     <Box sx={{ minWidth: 275 }}>
-//       <Card variant="outlined">{card}</Card>
-//     </Box>
-//   );
-// }
-
 function DashboardView() {
   return (
     <Grid container direction="column">
