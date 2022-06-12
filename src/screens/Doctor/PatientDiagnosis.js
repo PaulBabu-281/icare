@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import { afterBefore, Drug, Duration, Freq, columns } from "./data";
 import { updatePrepList } from "../../redux/prescrptionSlice";
+import { initializeState } from "../../redux/tokenSlice";
 
 import "./doctor.css";
 import { styled } from "@mui/material/styles";
@@ -62,6 +63,18 @@ export default function PatientDiagnosis() {
   ]);
 
   const SubmitHandler = (e) => {
+    dispatch(
+      initializeState({
+        id: 4,
+        name: "Go Back",
+        tokenNo: 4,
+        age: 22,
+        weight: 75,
+        temperature: 35,
+        BPM: 77,
+        gender: "F",
+      })
+    );
     let num = prepcount;
     num = num + 1;
 
@@ -72,30 +85,10 @@ export default function PatientDiagnosis() {
     let newPrep = [...prescriptionReal];
     newPrep.push(prescription);
     addPrescriptionReal(newPrep);
-    // console.log("input prep");
-    // console.log(prescription);
-    // console.log("temp prep ");
-    // console.log(newPrep);
-    // console.log(prepcount);
-    // console.log(prescriptionReal);
+
     dispatch(updatePrepList(prescription));
-    // console.log("From Store");
     console.log(prescriptionState);
-
-    // LoginDetail(details);
   };
-
-  // const prescription = [
-  //   {
-  //     id: 1,
-  //     num: 1,
-  //     Drug: "Cocaine",
-  //     freq: "Twice a day",
-  //     duration: "4 days",
-  //     inst: "after food",
-  //     remaks: "none",
-  //   },
-  // ];
 
   const box = () => {
     return (
@@ -144,24 +137,7 @@ export default function PatientDiagnosis() {
           >
             Back
           </Button>
-          {/* <Box
-            sx={{
-              padding: 2,
-              display: "flex",
-              alignItems: "center",
-              width: "fit-content",
-              border: (theme) => `1px solid ${theme.palette.divider}`,
-              borderRadius: 1,
-              bgcolor: "background.paper",
-              color: "black",
-              "& svg": {
-                m: 1.5,
-              },
-              "& hr": {
-                mx: 1.5,
-              },
-            }}
-          > */}
+
           <Typography>Patient Name : {patients[count].name}</Typography>
           {/* </Box> */}
 

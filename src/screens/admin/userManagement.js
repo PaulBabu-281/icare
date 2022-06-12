@@ -47,7 +47,7 @@ import toast from "../../components/snackbar";
 
 // transition effect
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='up' ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function UserManagement() {
@@ -67,10 +67,12 @@ export default function UserManagement() {
   const SubmitHandler = () => {
     setOpen(false);
     //console.log(userInfo);
-    const instance = axios.create({ baseURL: "http://localhost:3000" });
+    const instance = axios.create({
+      baseURL: "https://deploy-test-idoc.herokuapp.com",
+    });
 
     instance
-      .post("/user/signup", {
+      .post("/signup", {
         user_name: userInfo.user_name,
         user_mail: userInfo.user_mail,
         user_id: userInfo.user_id,
@@ -81,9 +83,11 @@ export default function UserManagement() {
       })
       .then((response) => {
         toast.success("Saved");
+        console.log(response);
         // snackbar("saved", "success");
       })
       .catch((error) => {
+        console.log(error);
         toast.error("something went wrong!");
       });
   };
@@ -132,12 +136,12 @@ export default function UserManagement() {
                 addUserinfo({ ...userInfo, user_name: e.target.value })
               }
               value={userInfo.user_name}
-              margin='dense'
-              id='user_name'
-              label='Name'
-              type='text'
+              margin="dense"
+              id="user_name"
+              label="Name"
+              type="text"
               fullWidth
-              variant='standard'
+              variant="standard"
             />
           </Box>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
@@ -148,12 +152,12 @@ export default function UserManagement() {
                 addUserinfo({ ...userInfo, user_mail: e.target.value })
               }
               value={userInfo.user_mail}
-              margin='dense'
-              id='user_mail'
-              label='Email'
-              type='email'
+              margin="dense"
+              id="user_mail"
+              label="Email"
+              type="email"
               fullWidth
-              variant='standard'
+              variant="standard"
             />
           </Box>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
@@ -166,12 +170,12 @@ export default function UserManagement() {
               }
               value={userInfo.user_id}
               autoFocus
-              margin='dense'
-              id='user_id'
-              label='UserID'
-              type='text'
+              margin="dense"
+              id="user_id"
+              label="UserID"
+              type="text"
               fullWidth
-              variant='standard'
+              variant="standard"
             />
           </Box>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
@@ -182,12 +186,12 @@ export default function UserManagement() {
                 addUserinfo({ ...userInfo, finger_id: e.target.value })
               }
               value={userInfo.finger_id}
-              margin='dense'
-              id='finger_id'
-              label='Finger_id'
-              type='text'
+              margin="dense"
+              id="finger_id"
+              label="Finger_id"
+              type="text"
               fullWidth
-              variant='standard'
+              variant="standard"
             />
           </Box>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
@@ -198,12 +202,12 @@ export default function UserManagement() {
                 addUserinfo({ ...userInfo, user_role: e.target.value })
               }
               value={userInfo.user_role}
-              margin='dense'
-              id='user_role'
-              label='Role'
-              type='text'
+              margin="dense"
+              id="user_role"
+              label="Role"
+              type="text"
               fullWidth
-              variant='standard'
+              variant="standard"
             />
           </Box>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
@@ -214,12 +218,12 @@ export default function UserManagement() {
                 addUserinfo({ ...userInfo, user_number: e.target.value })
               }
               value={userInfo.user_number}
-              margin='dense'
-              id='user_number'
-              label='Number'
-              type='text'
+              margin="dense"
+              id="user_number"
+              label="Number"
+              type="text"
               fullWidth
-              variant='standard'
+              variant="standard"
             />
           </Box>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
@@ -230,20 +234,20 @@ export default function UserManagement() {
                 addUserinfo({ ...userInfo, user_address: e.target.value })
               }
               value={userInfo.user_address}
-              margin='dense'
-              id='user_address'
-              label='Address'
-              type='text'
+              margin="dense"
+              id="user_address"
+              label="Address"
+              type="text"
               fullWidth
-              variant='standard'
+              variant="standard"
             />
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button color='error' onClick={handleClose}>
+          <Button color="error" onClick={handleClose}>
             Cancel
           </Button>
-          <Button type='submit' onClick={SubmitHandler}>
+          <Button type="submit" onClick={SubmitHandler}>
             Save
           </Button>
         </DialogActions>
@@ -254,7 +258,7 @@ export default function UserManagement() {
   // input dialog
 
   return (
-    <Grid container direction='column' alignItems={"center"}>
+    <Grid container direction="column" alignItems={"center"}>
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
           rows={rows}
@@ -279,14 +283,14 @@ export default function UserManagement() {
         }}
       >
         <Button
-          size='large'
+          size="large"
           sx={{
             maxWidth: 200,
             // "&:hover": {
             //   background: "#fd830d",
             // },
           }}
-          variant='outlined'
+          variant="outlined"
           startIcon={<Add />}
           onClick={handleClickOpen}
         >
@@ -323,9 +327,9 @@ const columns = [
     type: "actions",
     width: 150,
     getActions: () => [
-      <GridActionsCellItem icon={<EditIcon />} label='Edit' />,
-      <GridActionsCellItem icon={<DeleteIcon />} label='Delete' />,
-      <GridActionsCellItem icon={<RestartAlt />} label='Reset Password' />,
+      <GridActionsCellItem icon={<EditIcon />} label="Edit" />,
+      <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
+      <GridActionsCellItem icon={<RestartAlt />} label="Reset Password" />,
     ],
   },
 ];

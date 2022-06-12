@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [
+import axios from "axios";
+
+var initialState = [
   {
     id: 1,
     name: "Raju Bhai",
@@ -50,13 +52,40 @@ export const tokenSlice = createSlice({
   initialState,
   // Action is the retrived state or new state to be
   reducers: {
-    addToken: (state = { initialState }, action) => {
+    addToken: (state, action) => {
       state.name = action.payload.name;
     },
     removeToken: (state = { initialState }, action) => {
       state.name = action.payload.name;
     },
+    getToken: (state, action) => {
+      console.log(state);
+      let i = 0;
+      axios({
+        method: "get",
+        url: " https://deploy-test-idoc.herokuapp.com/health/showHealth/",
+        //responseType: "stream",
+      }).then(function (response) {
+        response.data.data.forEach((element) => {
+          console.log(element.temperature);
+          state[i].temperature = Number(element.temperature);
+          state[i].BPM = element.pulse;
+          state[i].weight = element.oxygen;
+          i++;
+        });
+        console.log(response.data.data[0]);
+      });
+      //  state.name = action.payload.name;
+    },
+
+    initializeState: (state, action) => {
+      // https://deploy-test-idoc.herokuapp.com/health/showHealth/
+
+      console.log("state ", state);
+      console.log("payload", action.payload);
+      // state = action.payload;
+    },
   },
 });
-export const { addToken } = tokenSlice.actions;
+export const { addToken, initializeState, getToken } = tokenSlice.actions;
 export default tokenSlice.reducer;

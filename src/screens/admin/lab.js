@@ -37,7 +37,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Stocks() {
+export default function Lab() {
   // input Dialog
 
   const [open, setOpen] = React.useState(false);
@@ -231,20 +231,17 @@ export default function Stocks() {
 // };
 
 const columns = [
-  { field: "name", headerName: "Name", width: 160, editable: true },
-  { field: "category", headerName: "Category", width: 200, editable: true },
-  { field: "unit", headerName: "Unit", type: "number", editable: true },
-  { field: "unitType", headerName: "Unit Type", type: 200, editable: true },
+  { field: "name", headerName: "Name", width: 160, editable: false },
   {
-    field: "company",
-    headerName: "Company",
+    field: "patientName",
+    headerName: "Patient Name ",
     type: "text",
-    width: 180,
-    editable: true,
+    width: 220,
+    editable: false,
   },
   {
-    field: "effect",
-    headerName: "Effect",
+    field: "resultStatus",
+    headerName: "Result Status",
     type: "text",
     width: 220,
     editable: true,
@@ -264,29 +261,20 @@ const columns = [
 const rows = [
   {
     id: 1,
-    name: "Azithral 500 Tablet",
-    category: "tablet",
-    unit: 25,
-    unitType: "count",
-    company: "Azithral",
-    effect: "none",
+    name: "blood count",
+    patientName: "Meg",
+    resultStatus: "Patient yet to take test",
   },
   {
     id: 2,
-    name: "Hcg 5000IU Injectiont",
-    category: "tablet",
-    unit: 25,
-    unitType: "count",
-    company: "Hcg",
-    effect: "none",
+    patientName: "Loki",
+    name: "thyroid function test",
+    resultStatus: "Awaiting result",
   },
   {
     id: 3,
-    name: "Dolo 650 Tablet",
-    category: "tablet",
-    unit: 25,
-    unitType: "count",
-    company: "Dolo",
-    effect: "none",
+    patientName: "Raj",
+    name: "blood count",
+    resultStatus: "Result Ready",
   },
 ];

@@ -12,6 +12,7 @@ import { Visibility } from "@mui/icons-material";
 import { generatePath, Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSelected } from "../../redux/tokenSelectSlice";
+import { getToken } from "../../redux/tokenSlice";
 
 export default function TokenView() {
   let navigate = useNavigate();
@@ -24,7 +25,12 @@ export default function TokenView() {
   };
 
   const patients = useSelector((state) => state.token);
+
   const dispatch = useDispatch();
+
+  // React.useEffect(() => {
+  //   dispatch(getToken());
+  // });
 
   const columns = [
     {
@@ -76,7 +82,7 @@ export default function TokenView() {
               (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
             );
           //generatePath("/users/:id", { id: 42 });
-          console.log(thisRow);
+          //console.log(thisRow);
           dispatch(updateSelected(Number(thisRow.tokenNo)));
 
           navigateToTokenDetails();

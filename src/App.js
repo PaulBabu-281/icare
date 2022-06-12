@@ -35,6 +35,7 @@ function App() {
     },
   ];
   let navigate = useNavigate();
+  let cors = require("cors");
   // useEffect(() => {
   //   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
   //   console.log(user);
@@ -106,6 +107,8 @@ function App() {
     // setUser({ name: "", email: "" });
     //console.log("loiu");
   };
+
+  //App.use(cors());
 
   // const successHandler = (success) => {
   //   setSuccess(...success, success);

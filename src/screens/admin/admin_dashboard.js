@@ -38,6 +38,7 @@ import UserManagement from "./userManagement";
 import TokenView from "../Doctor/token";
 import Stocks from "./stocks";
 import CardView from "./cardItemView";
+import Lab from "./lab";
 import { useSelector } from "react-redux";
 import { SnackbarProvider } from "notistack";
 
@@ -93,7 +94,7 @@ export default function PermanentDrawerLeft(props) {
     {
       text: "Lab",
       icon: <Biotech sx={iconTheme} />,
-      path: "/admin/cardview",
+      path: "/admin/lab",
     },
   ];
 
@@ -248,6 +249,7 @@ export default function PermanentDrawerLeft(props) {
             <Route path="/admin/usermanagement" element={<UserManagement />} />
             <Route path="/admin/tokenview" element={<TokenView />} />
             <Route path="/admin/stocks" element={<Stocks />} />
+            <Route path="/admin/lab" element={<Lab />} />
           </Routes>
         </SnackbarProvider>
       </Box>
