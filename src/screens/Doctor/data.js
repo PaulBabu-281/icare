@@ -3,6 +3,108 @@ import { Button, Divider } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { delPrescription } from "../../redux/prescrptionSlice";
+import {
+  randomCreatedDate,
+  randomTraderName,
+  randomEmail,
+  randomUpdatedDate,
+} from "@mui/x-data-grid-generator";
+
+export const patienttoday = [
+  {
+    id: 1,
+    name: randomTraderName(),
+    email: randomEmail(),
+    age: 33,
+    dis: "Headache",
+    dateCreated: randomCreatedDate(),
+    lastLogin: randomUpdatedDate(),
+  },
+  {
+    id: 2,
+    name: randomTraderName(),
+    email: randomEmail(),
+    age: 55,
+    dis: "Chest pain",
+    dateCreated: randomCreatedDate(),
+    lastLogin: randomUpdatedDate(),
+  },
+  {
+    id: 3,
+    name: randomTraderName(),
+    email: randomEmail(),
+    age: 19,
+    dis: "Fever",
+    dateCreated: randomCreatedDate(),
+    lastLogin: randomUpdatedDate(),
+  },
+  {
+    id: 4,
+    name: randomTraderName(),
+    email: randomEmail(),
+    age: 20,
+    dis: "Broken leg",
+    dateCreated: randomCreatedDate(),
+    lastLogin: randomUpdatedDate(),
+  },
+  {
+    id: 5,
+    name: randomTraderName(),
+    email: randomEmail(),
+    age: 25,
+    dis: "Fever",
+    dateCreated: randomCreatedDate(),
+    lastLogin: randomUpdatedDate(),
+  },
+];
+
+export const patientyesterday = [
+  {
+    id: 1,
+    name: randomTraderName(),
+    email: randomEmail(),
+    age: 33,
+    dis: "Headache",
+    dateCreated: randomCreatedDate(),
+    lastLogin: randomUpdatedDate(),
+  },
+  {
+    id: 2,
+    name: randomTraderName(),
+    email: randomEmail(),
+    age: 55,
+    dis: "Chest pain",
+    dateCreated: randomCreatedDate(),
+    lastLogin: randomUpdatedDate(),
+  },
+  {
+    id: 3,
+    name: randomTraderName(),
+    email: randomEmail(),
+    age: 19,
+    dis: "Fever",
+    dateCreated: randomCreatedDate(),
+    lastLogin: randomUpdatedDate(),
+  },
+  {
+    id: 4,
+    name: randomTraderName(),
+    email: randomEmail(),
+    age: 20,
+    dis: "Broken leg",
+    dateCreated: randomCreatedDate(),
+    lastLogin: randomUpdatedDate(),
+  },
+  {
+    id: 5,
+    name: randomTraderName(),
+    email: randomEmail(),
+    age: 25,
+    dis: "Fever",
+    dateCreated: randomCreatedDate(),
+    lastLogin: randomUpdatedDate(),
+  },
+];
 
 export const afterBefore = [
   { label: "After food" },

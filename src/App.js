@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Admin from "./screens/admin/admin_dashboard";
+import Pharm from "./screens/pharamacy/pharmacy_dashboard";
 import Login from "./screens/Login";
 import {
   Route,
@@ -18,6 +19,9 @@ import toast from "./components/snackbar";
 
 import { Helmet } from "react-helmet";
 
+import { useDispatch } from "react-redux";
+import { updatePatientList } from "./redux/patientDateSlice";
+
 function App() {
   const TITLE = "iCare";
 
@@ -33,15 +37,25 @@ function App() {
       userid: "doctor",
       password: "doctor",
     },
+    {
+      userid: "pharm",
+      password: "pharm",
+    },
+    {
+      userid: "lab",
+      password: "lab",
+    },
   ];
   let navigate = useNavigate();
-  let cors = require("cors");
+
+  const dispatch = useDispatch();
   // useEffect(() => {
   //   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
   //   console.log(user);
   // }, [user]);
 
   useEffect(() => {
+    dispatch(updatePatientList());
     const userLocalSaveUser = localStorage.getItem(LOCAL_STORAGE_KEY_USER);
     const userLocalSavePassword = localStorage.getItem(
       LOCAL_STORAGE_KEY_PASSWORD
@@ -124,8 +138,10 @@ function App() {
       {isLogedin !== false ? (
         userid == "admin" ? (
           <Admin LogoutFunc={Logout} />
-        ) : (
+        ) : userid == "doctor" ? (
           <Doctor LogoutFunc={Logout} />
+        ) : (
+          <Pharm LogoutFunc={Logout} />
         )
       ) : (
         <Login
