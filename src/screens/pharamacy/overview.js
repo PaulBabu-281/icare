@@ -33,9 +33,6 @@ const card = (data, i) => {
           {data.count}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
     </React.Fragment>
   );
 };

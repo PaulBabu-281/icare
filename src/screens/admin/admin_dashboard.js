@@ -44,7 +44,7 @@ import { Button } from "@mui/material";
 const drawerWidth = 240;
 
 export default function PermanentDrawerLeft(props) {
-  const name = useSelector((state) => state.user[1].name);
+  const name = useSelector((state) => state.name);
   console.log("name from redux " + name);
   let navigate = useNavigate();
   let location = useLocation();

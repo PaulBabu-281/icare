@@ -2,52 +2,49 @@ import React, { useState, useEffect } from "react";
 import Admin from "./screens/admin/admin_dashboard";
 import Pharm from "./screens/pharamacy/pharmacy_dashboard";
 import Login from "./screens/Login";
+import Doctor from "./screens/Doctor/Doctor";
 import {
   Route,
   // Router,
   Routes,
   useNavigate,
 } from "react-router-dom";
-// import CardView from "./screens/admin/cardItemView";
-// import UserManagement from "./screens/admin/userManagement";
-// import TokenView from "./screens/admin/token";
-// import Stocks from "./screens/admin/stocks";
-// import PatientDiagnosis from "./screens/admin/PatientDiagnosis";
-import Doctor from "./screens/Doctor/Doctor";
 
 import toast from "./components/snackbar";
 
 import { Helmet } from "react-helmet";
 
 import { useDispatch } from "react-redux";
-import { updatePatientList } from "./redux/patientDateSlice";
-//import getTokenList from "./handlers/apiHandlers/getTokenList";
-import { getToken } from "./redux/tokenSlice";
+
+import axios from "axios";
+import { saveDetails } from "./redux/userSlice";
 
 function App() {
-  const TITLE = "iCare";
+  const TITLE = "iDoc";
 
   const LOCAL_STORAGE_KEY_USER = "user";
   const LOCAL_STORAGE_KEY_PASSWORD = "password";
+  const LOCAL_STORAGE_KEY_ROLE = "role";
+  const LOCAL_STORAGE_KEY_NAME = "name";
 
-  const users = [
-    {
-      userid: "admin",
-      password: "admin",
-    },
-    {
-      userid: "doctor",
-      password: "doctor",
-    },
-    {
-      userid: "pharm",
-      password: "pharm",
-    },
-    {
-      userid: "lab",
-      password: "lab",
-    },
-  ];
+  // const users = [
+  //   {
+  //     userid: "admin",
+  //     password: "admin",
+  //   },
+  //   {
+  //     userid: "doctor",
+  //     password: "doctor",
+  //   },
+  //   {
+  //     userid: "pharm",
+  //     password: "pharm",
+  //   },
+  //   {
+  //     userid: "lab",
+  //     password: "lab",
+  //   },
+  // ];
   let navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -65,62 +62,81 @@ function App() {
     const userLocalSavePassword = localStorage.getItem(
       LOCAL_STORAGE_KEY_PASSWORD
     );
-    console.log(userLocalSaveUser);
+    const userLocalSaveUserRole = localStorage.getItem(LOCAL_STORAGE_KEY_ROLE);
+    const userLocalSaveUserName = localStorage.getItem(LOCAL_STORAGE_KEY_NAME);
+    const userNameRole = {
+      user_name: userLocalSaveUserName,
+      user_role: userLocalSaveUserRole,
+    };
+    // console.log(userLocalSaveUser);
     if (userLocalSaveUser) {
       setUserid(userLocalSaveUser);
       setPassword(userLocalSavePassword);
+      setRole("admin");
+      setName(userLocalSaveUserName);
       setisLogedin(true);
+      dispatch(saveDetails(userNameRole));
     }
   }, []);
 
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  const [name, setName] = useState("");
   const [isLogedin, setisLogedin] = useState(false);
   // const [LoggedInUser, setLoggedInUser] = useState("");
   // const [error, setError] = useState("");
   //const [success, setSuccess] = useState(false);
   var setLoggedInUser = false;
-  const LoginDetail = (details) => {
-    //  console.log(details);
+  const LoginDetail = async (details) => {
+    const instance = axios.create({
+      baseURL: "https://deploy-test-idoc.herokuapp.com",
+    });
 
-    // users.map((user)=>(get(item) {
-    //   return [item.userid];
-    // }))
-
-    for (var i = 0; i < users.length; i++) {
-      if (
-        users[i].userid == details.userid &&
-        users[i].password == details.password
-      ) {
+    await instance
+      .post("/signin", {
+        user_password: details.password,
+        user_mail: details.userid,
+      })
+      .then((response) => {
+        console.log(response.data.data);
         setisLogedin(true);
-        //toast.success("Logged in");
-        // setLoggedInUser(details.userid);
         setLoggedInUser = true;
         setUserid(details.userid);
         setPassword(details.password);
+        setRole(response.data.data.user_role);
         localStorage.setItem(LOCAL_STORAGE_KEY_USER, details.userid);
         localStorage.setItem(LOCAL_STORAGE_KEY_PASSWORD, details.password);
-        console.log("Logged In");
-        console.log(userid);
-      }
-    }
-    console.log(setLoggedInUser);
-    if (!setLoggedInUser) toast.error("incorrect userid or password");
-    // if (!isLogedin) {
-    //   toast.error("incorrect userid or password");
-    // }
-
-    // if (isLogedin) {
-    //   //setUser({ ...user, name: details.userid, password: details.password });
-    //   //console.log(user);
-    // }
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY_ROLE,
+          response.data.data.user_role
+        );
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY_NAME,
+          response.data.data.user_name
+        );
+        toast.success("Welcome " + response.data.data.user_name);
+        dispatch(saveDetails(response.data.data));
+        //console.log("Logged In");
+        // console.log(userid);
+        // snackbar("saved", "success");
+        setRole("admin");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("something went wrong!");
+      });
   };
 
   const Logout = () => {
     setUserid("");
     setPassword("");
+    setRole("");
+    setName("");
     localStorage.setItem(LOCAL_STORAGE_KEY_USER, "");
     localStorage.setItem(LOCAL_STORAGE_KEY_PASSWORD, "");
+    localStorage.setItem(LOCAL_STORAGE_KEY_NAME, "");
+    localStorage.setItem(LOCAL_STORAGE_KEY_ROLE, "");
     setisLogedin(false);
     navigate("/");
     // setUser({ name: "", email: "" });
@@ -140,14 +156,12 @@ function App() {
         <link rel="canonical" href="http://mysite.com/example" />
       </Helmet>
 
-      {isLogedin !== false ? (
-        userid == "admin" ? (
-          <Admin LogoutFunc={Logout} />
-        ) : userid == "doctor" ? (
-          <Doctor LogoutFunc={Logout} />
-        ) : (
-          <Pharm LogoutFunc={Logout} />
-        )
+      {role == "admin" ? (
+        <Admin LogoutFunc={Logout} />
+      ) : role == "doctor" ? (
+        <Doctor LogoutFunc={Logout} />
+      ) : role == "pharm" ? (
+        <Pharm LogoutFunc={Logout} />
       ) : (
         <Login
           LoginDetail={LoginDetail}

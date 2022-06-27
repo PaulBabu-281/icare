@@ -12,14 +12,6 @@ const textFieldStyle = {
 };
 
 function Login({ LoginDetail, error }) {
-  // const isDesktopOrLaptop = useMediaQuery({
-  //   query: "(min-width: 1224px)",
-  // });
-  // const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
-  // const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
-  // const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
-  // const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
-
   const [details, setDetails] = useState({ userid: "", password: "" });
   const SubmitHandler = (e) => {
     e.preventDefault();
@@ -62,7 +54,7 @@ function Login({ LoginDetail, error }) {
                   component="h3"
                   style={{ marginBottom: "1em" }}
                 >
-                  iCare
+                  idoc
                 </Typography>
               </Grid>
               <Grid

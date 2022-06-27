@@ -31,10 +31,6 @@ const card = (data) => {
             <Typography variant="body2">{data.count}</Typography>
           </Typography>
         </CardContent>
-
-        <CardActions>
-          <Button size="small">Learn More</Button>
-        </CardActions>
       </React.Fragment>
     </Grid>
   );

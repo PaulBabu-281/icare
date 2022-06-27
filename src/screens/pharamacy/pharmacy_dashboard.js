@@ -48,8 +48,8 @@ import { Button } from "@mui/material";
 
 const drawerWidth = 240;
 
-export default function PermanentDrawerLeft(props) {
-  const name = useSelector((state) => state.user[1].name);
+export default function PharmacyDashboard(props) {
+  const name = useSelector((state) => state.name);
   console.log("name from redux " + name);
   let navigate = useNavigate();
   let location = useLocation();
@@ -102,7 +102,7 @@ export default function PermanentDrawerLeft(props) {
     // },
   ];
 
-  const routes = [{ path: "/" }];
+  //const routes = [{ path: "/" }];
 
   return (
     <Box sx={{ display: "flex" }}>

@@ -1,18 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [
-  {
-    name: "Rahul",
-    role: "Doctor",
-    age: "32",
-  },
-  {
-    name: "Sam",
-    role: "Admin",
-    age: "32",
-  },
-];
-
+const initialState = {
+  value: [],
+};
 export const userSlice = createSlice({
   //name of the state
   name: "user",
@@ -21,7 +11,9 @@ export const userSlice = createSlice({
   // Action is the retrived state or new state to be
   reducers: {
     saveDetails: (state = { initialState }, action) => {
-      state.name = action.payload.name;
+      console.log(action.payload);
+      state = action.payload;
+      // state.role = action.payload.user_role;
     },
     addDetails: (state = { initialState }, action) => {
       state.name = action.payload.name;
