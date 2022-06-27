@@ -56,8 +56,6 @@ function DashboardView() {
           </Grid>
         ))}
       </Grid>
-      This Week
-      <Grid item>Graph Here (Coming soon...)</Grid>
     </Grid>
   );
 }

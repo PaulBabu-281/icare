@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: [],
+  user_name: "",
+  user_role: "",
 };
 export const userSlice = createSlice({
   //name of the state
@@ -10,13 +11,14 @@ export const userSlice = createSlice({
   initialState,
   // Action is the retrived state or new state to be
   reducers: {
-    saveDetails: (state = { initialState }, action) => {
+    saveDetails: (state, action) => {
       console.log(action.payload);
-      state = action.payload;
+      state.user_name = action.payload.user_name;
+      state.user_role = action.payload.user_role;
       // state.role = action.payload.user_role;
     },
     addDetails: (state = { initialState }, action) => {
-      state.name = action.payload.name;
+      //state.name = action.payload.name;
     },
   },
 });

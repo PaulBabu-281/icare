@@ -44,8 +44,8 @@ import { Button } from "@mui/material";
 const drawerWidth = 240;
 
 export default function PermanentDrawerLeft(props) {
-  const name = useSelector((state) => state.name);
-  console.log("name from redux " + name);
+  const name = useSelector((state) => state.user.user_name);
+  //console.log("name from redux " + name);
   let navigate = useNavigate();
   let location = useLocation();
 
@@ -71,7 +71,7 @@ export default function PermanentDrawerLeft(props) {
     color: "#e9f4ff",
   };
 
-  const [appbarText, setText] = React.useState("Welcome," + name);
+  const [appbarText, setText] = React.useState("Welcome, " + name);
   //console.log("name from redux " + name);
 
   const menuItems = [
@@ -166,7 +166,7 @@ export default function PermanentDrawerLeft(props) {
                   />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Admin" />
+              <ListItemText primary={name} />
             </ListItem>
           </List>
         </Toolbar>

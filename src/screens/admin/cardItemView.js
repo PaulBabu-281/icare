@@ -6,7 +6,6 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-// import Graph from "./graphView";
 
 const dataArr = [
   {
@@ -22,41 +21,42 @@ const dataArr = [
     count: "25",
   },
 ];
-const card = (data, i) => {
+const card = (data) => {
   return (
-    <React.Fragment>
-      <CardContent>
-        <Typography variant="h5" component="div">
-          {data.heading}
-        </Typography>
-        <Typography variant="body2" key={i}>
-          {data.count}
-        </Typography>
-      </CardContent>
-    </React.Fragment>
+    <Grid container sx={{ margin: 2, width: 300 }}>
+      <React.Fragment>
+        <CardContent>
+          <Typography variant="h5" component="div">
+            {data.heading} :
+            <Typography variant="body2">{data.count}</Typography>
+          </Typography>
+        </CardContent>
+      </React.Fragment>
+    </Grid>
   );
 };
 
 function DashboardView() {
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      <Grid container direction="column">
-        today
-        <Grid container direction="row">
-          {dataArr.map((items, i) => (
-            <Grid item>
-              <Box sx={{ minWidth: 275 }}>
-                <Card variant="outlined">{card(items, i)}</Card>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-        This Week
-        {/* <Grid item>
-        <Graph />
-      </Grid> */}
+    <Grid container direction="column">
+      Today
+      <Grid
+        container
+        direction="row"
+        spacing={2}
+        //justifyContent="space-evenly"
+        alignItems="flex-start"
+      >
+        {dataArr.map((items) => (
+          <Grid item>
+            {" "}
+            <Box sx={{ minWidth: 275 }}>
+              <Card variant="outlined">{card(items)}</Card>
+            </Box>
+          </Grid>
+        ))}
       </Grid>
-    </div>
+    </Grid>
   );
 }
 export default DashboardView;

@@ -30,9 +30,17 @@ import {
   RestartAlt,
   Visibility,
   Delete,
+  Business,
+  Grain,
+  CalendarMonth,
+  Category,
+  DriveFileRenameOutline,
+  Numbers,
+  Looks6,
 } from "@mui/icons-material";
 
 import toast from "../../components/snackbar";
+import axios from "axios";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -42,30 +50,92 @@ export default function Stocks() {
   // input Dialog
 
   const [open, setOpen] = React.useState(false);
+  const [rows, setRow] = React.useState([]);
+  const [isloading, setloading] = React.useState(true);
+  const [newStock, addNewStock] = React.useState({
+    stock_name: "",
+    stock_category: "",
+    stock_units: "",
+    stock_type: "",
+    company_name: "",
+    effect: "",
+    expiry_date: "",
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  const addStock = async () => {
+    const instance = axios.create({
+      baseURL: "https://deploy-test-idoc.herokuapp.com",
+    });
+    //deploy-test-idoc.herokuapp.com/stocks/add
+    console.log(newStock);
+    await instance
+      .post("/stocks/add", {
+        stock_name: newStock.stock_name,
+        stock_category: newStock.stock_category,
+        stock_unit: newStock.stock_units,
+        stock_type: newStock.stock_type,
+        company_name: newStock.company_name,
+        effect: newStock.effect,
+        expiry_date: newStock.expiry_date,
+      })
+      .then((response) => {
+        console.log(response);
+        toast.success("Data Added");
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        toast.error("something went wrong!");
+      });
+  };
+  const handleSave = async () => {
+    console.log();
+    await addStock();
+    fetchStock();
+    setOpen(false);
+    // toast.error("something went wrong!");
+  };
+
   const handleClose = () => {
     setOpen(false);
-    toast.error("something went wrong!");
+
+    toast.error("Operation cancelled");
   };
   // input dialog
+  const fetchStock = async () => {
+    await axios({
+      method: "get",
+      url: "https://deploy-test-idoc.herokuapp.com/stocks",
+      //responseType: "stream",
+    })
+      .then(function (response) {
+        console.log(response.data.stocks);
+        setRow(response.data.stocks);
+        //dispatch(getToken(response.data.data));
+        //return response.data.data;
+        setloading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
+  };
+
+  React.useEffect(() => {
+    fetchStock();
+  }, []);
 
   return (
     <Grid container direction="column" alignItems={"center"}>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ height: 550, width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}
-          checkboxSelection
-          initialState={{
-            pinnedColumns: {
-              left: [GRID_CHECKBOX_SELECTION_COL_DEF.field],
-              right: ["actions"],
-            },
-          }}
+          getRowId={(row) => row._id}
+          loading={isloading}
         />
       </div>
       <Grid
@@ -99,7 +169,7 @@ export default function Stocks() {
           onClose={handleClose}
           TransitionComponent={Transition}
         >
-          <DialogTitle>Add User</DialogTitle>
+          <DialogTitle>Add Stock</DialogTitle>
           <DialogContent>
             <DialogContentText>Fill Fields</DialogContentText>
             {/* {textFieldModified(
@@ -112,71 +182,100 @@ export default function Stocks() {
               //   { ...props }
             )} */}
             <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+              <DriveFileRenameOutline
+                sx={{ color: "action.active", mr: 1, my: 0.5 }}
+              />
               <TextField
                 autoFocus
                 margin="dense"
-                id="name"
+                id="stock_name"
                 label="Name"
                 type="text"
                 fullWidth
                 variant="standard"
+                onChange={(e) =>
+                  addNewStock({ ...newStock, stock_name: e.target.value })
+                }
+                value={newStock.stock_name}
               />
             </Box>
             <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <Email sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+              <Category sx={{ color: "action.active", mr: 1, my: 0.5 }} />
               <TextField
                 autoFocus
                 margin="dense"
-                id="category"
+                id="stock_category"
                 label="Category"
                 type="text"
                 fullWidth
                 variant="standard"
+                onChange={(e) =>
+                  addNewStock({
+                    ...newStock,
+                    stock_category: e.target.value,
+                  })
+                }
+                value={newStock.stock_category}
               />
             </Box>
             <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <SentimentVerySatisfied
-                sx={{ color: "action.active", mr: 1, my: 0.5 }}
-              />
+              <Numbers sx={{ color: "action.active", mr: 1, my: 0.5 }} />
               <TextField
                 autoFocus
                 margin="dense"
-                id="units"
+                id="stock_units"
                 label="Units"
-                type="number"
                 fullWidth
                 variant="standard"
+                onChange={(e) =>
+                  addNewStock({
+                    ...newStock,
+                    stock_units: e.target.value,
+                  })
+                }
+                value={newStock.stock_units}
               />
             </Box>
             <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <MedicalServices
-                sx={{ color: "action.active", mr: 1, my: 0.5 }}
-              />
+              <Looks6 sx={{ color: "action.active", mr: 1, my: 0.5 }} />
               <TextField
                 autoFocus
                 margin="dense"
-                id="unitType"
+                id="stock_type"
                 label="Unit Type"
                 type="text"
                 fullWidth
                 variant="standard"
+                onChange={(e) =>
+                  addNewStock({
+                    ...newStock,
+                    stock_type: e.target.value,
+                  })
+                }
+                value={newStock.stock_type}
               />
             </Box>
             <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <Password sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+              <Business sx={{ color: "action.active", mr: 1, my: 0.5 }} />
               <TextField
                 autoFocus
                 margin="dense"
-                id="company"
+                id="company_name"
                 label="Company"
                 type="text"
                 fullWidth
                 variant="standard"
+                onChange={(e) =>
+                  addNewStock({
+                    ...newStock,
+                    company_name: e.target.value,
+                  })
+                }
+                value={newStock.company_name}
               />
             </Box>
             <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-              <Password sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+              <Grain sx={{ color: "action.active", mr: 1, my: 0.5 }} />
               <TextField
                 autoFocus
                 margin="dense"
@@ -185,6 +284,32 @@ export default function Stocks() {
                 type="text"
                 fullWidth
                 variant="standard"
+                onChange={(e) =>
+                  addNewStock({
+                    ...newStock,
+                    effect: e.target.value,
+                  })
+                }
+                value={newStock.effect}
+              />
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              <CalendarMonth sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+              <TextField
+                autoFocus
+                margin="dense"
+                id="expiry_date"
+                label="Expiry Date"
+                type="date"
+                fullWidth
+                variant="standard"
+                onChange={(e) =>
+                  addNewStock({
+                    ...newStock,
+                    expiry_date: e.target.value,
+                  })
+                }
+                value={newStock.expiry_date}
               />
             </Box>
           </DialogContent>
@@ -192,7 +317,7 @@ export default function Stocks() {
             <Button color="error" onClick={handleClose}>
               Cancel
             </Button>
-            <Button onClick={handleClose}>Save</Button>
+            <Button onClick={handleSave}>Save</Button>
           </DialogActions>
         </Dialog>
       </Grid>
@@ -232,12 +357,17 @@ export default function Stocks() {
 // };
 
 const columns = [
-  { field: "name", headerName: "Name", width: 160, editable: true },
-  { field: "category", headerName: "Category", width: 200, editable: true },
-  { field: "unit", headerName: "Unit", type: "number", editable: true },
-  { field: "unitType", headerName: "Unit Type", type: 200, editable: true },
+  { field: "stock_name", headerName: "Name", width: 160, editable: true },
   {
-    field: "company",
+    field: "stock_category",
+    headerName: "Category",
+    width: 200,
+    editable: true,
+  },
+  { field: "stock_unit", headerName: "Unit", type: "number", editable: true },
+  { field: "stock_type", headerName: "Unit Type", type: 200, editable: true },
+  {
+    field: "company_name",
     headerName: "Company",
     type: "text",
     width: 180,
@@ -258,8 +388,8 @@ const columns = [
       const onClick = (e) => {
         e.stopPropagation(); // don't select this row after clicking
 
-        const api: GridApi = params.api;
-        const thisRow: Record<string, GridCellValue> = {};
+        const api = params.api;
+        const thisRow = {};
 
         api
           .getAllColumns()
@@ -278,35 +408,5 @@ const columns = [
       };
       return <Button onClick={onClick}>{<Delete />}</Button>;
     },
-  },
-];
-
-const rows = [
-  {
-    id: 1,
-    name: "Azithral 500 Tablet",
-    category: "tablet",
-    unit: 25,
-    unitType: "count",
-    company: "Azithral",
-    effect: "none",
-  },
-  {
-    id: 2,
-    name: "Hcg 5000IU Injectiont",
-    category: "tablet",
-    unit: 25,
-    unitType: "count",
-    company: "Hcg",
-    effect: "none",
-  },
-  {
-    id: 3,
-    name: "Dolo 650 Tablet",
-    category: "tablet",
-    unit: 25,
-    unitType: "count",
-    company: "Dolo",
-    effect: "none",
   },
 ];

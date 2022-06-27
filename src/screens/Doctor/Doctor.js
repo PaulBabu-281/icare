@@ -38,11 +38,13 @@ import PatientDiagnosis from "./PatientDiagnosis";
 import TokenView from "./token";
 import { Button } from "@mui/material";
 import Lab from "./lab";
+import { useSelector } from "react-redux";
 //import { Switch } from "@mui/material";
 
 const drawerWidth = 240;
 
 export default function Doctor(props) {
+  const name = useSelector((state) => state.user.user_name);
   let navigate = useNavigate();
   let location = useLocation();
   const LogoutHandler = (e) => {
@@ -158,7 +160,7 @@ export default function Doctor(props) {
                   <AccountCircle />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Doctor" />
+              <ListItemText primary={name} />
             </ListItem>
           </List>
         </Toolbar>

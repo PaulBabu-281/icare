@@ -27,24 +27,6 @@ function App() {
   const LOCAL_STORAGE_KEY_ROLE = "role";
   const LOCAL_STORAGE_KEY_NAME = "name";
 
-  // const users = [
-  //   {
-  //     userid: "admin",
-  //     password: "admin",
-  //   },
-  //   {
-  //     userid: "doctor",
-  //     password: "doctor",
-  //   },
-  //   {
-  //     userid: "pharm",
-  //     password: "pharm",
-  //   },
-  //   {
-  //     userid: "lab",
-  //     password: "lab",
-  //   },
-  // ];
   let navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -72,7 +54,7 @@ function App() {
     if (userLocalSaveUser) {
       setUserid(userLocalSaveUser);
       setPassword(userLocalSavePassword);
-      setRole("admin");
+      setRole(userLocalSaveUserRole);
       setName(userLocalSaveUserName);
       setisLogedin(true);
       dispatch(saveDetails(userNameRole));
@@ -120,7 +102,6 @@ function App() {
         //console.log("Logged In");
         // console.log(userid);
         // snackbar("saved", "success");
-        setRole("admin");
       })
       .catch((error) => {
         console.log(error);
