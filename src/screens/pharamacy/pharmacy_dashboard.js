@@ -49,7 +49,7 @@ import { Button } from "@mui/material";
 const drawerWidth = 240;
 
 export default function PharmacyDashboard(props) {
-  const name = useSelector((state) => state.name);
+  const name = useSelector((state) => state.user.user_name);
   console.log("name from redux " + name);
   let navigate = useNavigate();
   let location = useLocation();
