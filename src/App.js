@@ -164,7 +164,7 @@ function App() {
         <Admin LogoutFunc={Logout} />
       ) : role == "doctor" ? (
         <Doctor LogoutFunc={Logout} />
-      ) : role == "pharm" ? (
+      ) : role == "pharmacy" ? (
         <Pharm LogoutFunc={Logout} />
       ) : (
         <Login
