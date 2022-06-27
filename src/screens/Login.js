@@ -85,7 +85,7 @@ function Login({ LoginDetail, error }) {
                     }
                     value={details.userid}
                     id="userid"
-                    label="User ID"
+                    label="Mail ID"
                     variant="standard"
                     style={textFieldStyle}
                     required

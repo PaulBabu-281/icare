@@ -10,6 +10,9 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import LoadingAnimation from "./components/circularProgress";
+import background from "./images/login_background.png";
+
 import toast from "./components/snackbar";
 
 import { Helmet } from "react-helmet";
@@ -18,6 +21,7 @@ import { useDispatch } from "react-redux";
 
 import axios from "axios";
 import { saveDetails } from "./redux/userSlice";
+import { Box } from "@mui/system";
 
 function App() {
   const TITLE = "iDoc";
@@ -66,11 +70,13 @@ function App() {
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [isLogedin, setisLogedin] = useState(false);
+  const [isloading, setloading] = useState(false);
   // const [LoggedInUser, setLoggedInUser] = useState("");
   // const [error, setError] = useState("");
   //const [success, setSuccess] = useState(false);
   var setLoggedInUser = false;
   const LoginDetail = async (details) => {
+    setloading(true);
     const instance = axios.create({
       baseURL: "https://deploy-test-idoc.herokuapp.com",
     });
@@ -107,6 +113,7 @@ function App() {
         console.log(error);
         toast.error("something went wrong!");
       });
+    setloading(false);
   };
 
   const Logout = () => {
@@ -130,13 +137,29 @@ function App() {
   //   setSuccess(...success, success);
   // };
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: "100%", width: "100%" }}>
       <Helmet>
         <meta charSet="utf-8" />
         <title>{TITLE}</title>
         <link rel="canonical" href="http://mysite.com/example" />
       </Helmet>
-
+      {isloading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            height: "100vh",
+            alignItems: "center",
+            zIndex: "1",
+            position: "absolute",
+            left: "50%",
+          }}
+        >
+          <LoadingAnimation sx={{ fontSize: "200px" }} size={100} />
+        </Box>
+      ) : (
+        ""
+      )}
       {role == "admin" ? (
         <Admin LogoutFunc={Logout} />
       ) : role == "doctor" ? (
@@ -145,6 +168,12 @@ function App() {
         <Pharm LogoutFunc={Logout} />
       ) : (
         <Login
+          sx={{
+            display: "flex",
+            position: "absolute",
+            justifyContent: "center",
+            zIndex: "1",
+          }}
           LoginDetail={LoginDetail}
           //error={error}
         />

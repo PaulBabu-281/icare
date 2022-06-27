@@ -9,26 +9,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 // input dialogx
-import {
-  GridActionsCellItem,
-  GRID_CHECKBOX_SELECTION_COL_DEF,
-} from "@mui/x-data-grid-pro";
-import {
-  randomCreatedDate,
-  randomTraderName,
-  randomEmail,
-  randomUpdatedDate,
-} from "@mui/x-data-grid-generator";
+
 import { Box, Button, Grid, Slide } from "@mui/material";
 import {
-  AccountCircle,
   Add,
-  Email,
-  MedicalServices,
-  Password,
-  SentimentVerySatisfied,
-  RestartAlt,
-  Visibility,
   Delete,
   Business,
   Grain,

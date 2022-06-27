@@ -53,6 +53,31 @@ export default function UserManagement() {
   // input Dialog
 
   const [open, setOpen] = React.useState(false);
+  const [isloading, setloading] = React.useState(true);
+  const [rows, setRow] = React.useState([]);
+
+  const fetchUsers = async () => {
+    await axios({
+      method: "get",
+      url: "https://deploy-test-idoc.herokuapp.com/user",
+      //responseType: "stream",
+    })
+      .then(function (response) {
+        console.log(response);
+        setRow(response.data.users);
+        //dispatch(getToken(response.data.data));
+        //return response.data.data;
+        setloading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
+  };
+
+  React.useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -262,13 +287,8 @@ export default function UserManagement() {
         <DataGrid
           rows={rows}
           columns={columns}
-          checkboxSelection
-          initialState={{
-            pinnedColumns: {
-              left: [GRID_CHECKBOX_SELECTION_COL_DEF.field],
-              right: ["actions"],
-            },
-          }}
+          loading={isloading}
+          getRowId={(row) => row._id}
         />
       </div>
       <Grid
@@ -303,21 +323,19 @@ export default function UserManagement() {
 }
 
 const columns = [
-  { field: "name", headerName: "Name", width: 160, editable: true },
-  { field: "email", headerName: "Email", width: 200, editable: true },
-  { field: "age", headerName: "Age", type: "number", editable: true },
-  { field: "post", headerName: "Position", type: 200, editable: true },
+  { field: "user_name", headerName: "Name", width: 160, editable: true },
+  { field: "user_mail", headerName: "Email", width: 200, editable: true },
+  { field: "user_role", headerName: "Position", type: 200, editable: true },
   {
-    field: "dateCreated",
-    headerName: "Date Created",
-    type: "date",
+    field: "user_number",
+    headerName: "Phone Number",
     width: 180,
     editable: true,
   },
   {
-    field: "lastLogin",
-    headerName: "Last Login",
-    type: "dateTime",
+    field: "user_address",
+    headerName: "Address",
+    type: "text",
     width: 220,
     editable: true,
   },
@@ -349,53 +367,5 @@ const columns = [
       };
       return <Button onClick={onClick}>{<Delete />}</Button>;
     },
-  },
-];
-
-const rows = [
-  {
-    id: 1,
-    name: randomTraderName(),
-    email: randomEmail(),
-    age: 25,
-    post: "Doctor",
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-  {
-    id: 2,
-    name: randomTraderName(),
-    email: randomEmail(),
-    age: 36,
-    post: "Doctor",
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-  {
-    id: 3,
-    name: randomTraderName(),
-    email: randomEmail(),
-    age: 19,
-    post: "Doctor",
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-  {
-    id: 4,
-    name: randomTraderName(),
-    email: randomEmail(),
-    age: 28,
-    post: "Nurse",
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-  {
-    id: 5,
-    name: randomTraderName(),
-    email: randomEmail(),
-    age: 23,
-    post: "Pharamacy",
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
   },
 ];
