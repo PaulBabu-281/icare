@@ -25,7 +25,7 @@ export const savePatientsDay = createSlice({
       } else state.value = patientyesterday;
 
       day = !day;
-      console.log(state);
+      // console.log(state);
     },
     updatePrepList: (state, action) => {
       state.push(action.payload);

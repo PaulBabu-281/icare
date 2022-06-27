@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateSelected } from "../../redux/tokenSelectSlice";
 import { getToken } from "../../redux/tokenSlice";
 
-export default function TokenView() {
+export default function PrescriptionView() {
   let navigate = useNavigate();
 
   const token = useSelector((state) => state.selectedToken);

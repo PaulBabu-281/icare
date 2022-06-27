@@ -21,6 +21,8 @@ import { Helmet } from "react-helmet";
 
 import { useDispatch } from "react-redux";
 import { updatePatientList } from "./redux/patientDateSlice";
+//import getTokenList from "./handlers/apiHandlers/getTokenList";
+import { getToken } from "./redux/tokenSlice";
 
 function App() {
   const TITLE = "iCare";
@@ -55,7 +57,10 @@ function App() {
   // }, [user]);
 
   useEffect(() => {
-    dispatch(updatePatientList());
+    //dispatch(updatePatientList());
+    // const tokenList = getTokenList();
+    // console.log(tokenList);
+    // dispatch(getToken(tokenList));
     const userLocalSaveUser = localStorage.getItem(LOCAL_STORAGE_KEY_USER);
     const userLocalSavePassword = localStorage.getItem(
       LOCAL_STORAGE_KEY_PASSWORD

@@ -41,6 +41,7 @@ import CardView from "./cardItemView";
 import Lab from "./lab";
 import { useSelector } from "react-redux";
 import { SnackbarProvider } from "notistack";
+import { Button } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -111,10 +112,22 @@ export default function PermanentDrawerLeft(props) {
           backgroundColor: "#4c51c6",
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
           <Typography variant="h6" noWrap component="div">
             {appbarText}
           </Typography>
+          <Button
+            onClick={LogoutHandler}
+            color="inherit"
+            startIcon={<Logout />}
+            sx={{
+              "&:hover": {
+                background: "#fd830d",
+              },
+            }}
+          >
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -194,37 +207,6 @@ export default function PermanentDrawerLeft(props) {
           ))}
         </List>
         <Divider />
-
-        <List
-          sx={{
-            height: "100%",
-            paddingRight: 2,
-            paddingTop: "145%",
-            alignContent: "baseline",
-          }}
-        >
-          <ListItem
-            button
-            key={"Logout"}
-            sx={{
-              maxWidth: 360,
-              marginLeft: 1,
-              marginTop: 1,
-              borderRadius: 2,
-              borderWidth: 1,
-
-              "&:hover": {
-                background: "#fd830d",
-              },
-            }}
-            onClick={LogoutHandler}
-          >
-            <ListItemIcon>
-              <Logout />
-            </ListItemIcon>
-            <ListItemText primary={"Logout"} />
-          </ListItem>
-        </List>
       </Drawer>
       <Box
         // className='main-content'

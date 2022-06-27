@@ -18,34 +18,49 @@ import { generatePath, Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSelected } from "../../redux/tokenSelectSlice";
 import { getToken } from "../../redux/tokenSlice";
+import axios from "axios";
 
 export default function TokenView() {
   let navigate = useNavigate();
-
-  const token = useSelector((state) => state.selectedToken);
-  console.log(token);
 
   const navigateToTokenDetails = () => {
     navigate("/doctor/patientdiagnosis/", { replace: true });
   };
 
-  const patients = useSelector((state) => state.token);
+  const patients = useSelector((state) => state.token.value);
+  console.log(patients);
 
   const dispatch = useDispatch();
 
-  // React.useEffect(() => {
-  //   dispatch(getToken());
-  // });
+  const fetchToken = async () => {
+    await axios({
+      method: "get",
+      url: " https://deploy-test-idoc.herokuapp.com/health/showHealth/",
+      //responseType: "stream",
+    }).then(function (response) {
+      console.log(response.data.data);
+      dispatch(getToken(response.data.data));
+      //return response.data.data;
+    });
+  };
+
+  React.useEffect(() => {
+    fetchToken();
+    // dispatch(getToken());
+  }, []);
+
+  const token = useSelector((state) => state.selectedToken);
+  console.log(token);
 
   const columns = [
     {
       field: "tokenNo",
       headerName: "Token Number",
-      width: 150,
+      width: 110,
       type: "number",
       editable: false,
     },
-    { field: "name", headerName: "Name", width: 200, editable: false },
+    { field: "name", headerName: "Name", width: 175, editable: false },
     { field: "age", headerName: "Age", type: "number", editable: false },
     {
       field: "temperature",
@@ -56,7 +71,7 @@ export default function TokenView() {
       editable: false,
     },
     {
-      field: "BPM",
+      field: "pulse",
       headerName: "Pulse rate",
       type: "number",
       width: 150,
@@ -67,6 +82,13 @@ export default function TokenView() {
       headerName: "Weight",
       type: "number",
       width: 220,
+      editable: false,
+    },
+    {
+      field: "oxygen",
+      headerName: "oxygen",
+      type: "number",
+      width: 150,
       editable: false,
     },
     {
@@ -120,6 +142,7 @@ export default function TokenView() {
           components={{ Toolbar: GridToolbar }}
           rows={patients}
           columns={columns}
+          getRowId={(row) => row._id}
           //checkboxSelection
           hideFooterPagination
           initialState={{

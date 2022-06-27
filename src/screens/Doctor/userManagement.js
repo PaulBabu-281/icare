@@ -24,6 +24,7 @@ import {
   Slide,
   ToggleButton,
   ToggleButtonGroup,
+  Typography,
 } from "@mui/material";
 import {
   AccountCircle,
@@ -72,19 +73,14 @@ export default function UserManagement() {
   const [alignment, setAlignment] = React.useState("web");
 
   // "2014-08-18T21:11:54";
-  const [value, setValue] = React.useState(
-    new Date(format(new Date(), "dd.MM.yyyy"))
-  );
-
-  const handleDate = (newValue) => {
-    setValue(newValue);
-  };
+  const [value, setValue] = React.useState(format(new Date(), "yyyy-MM-dd"));
 
   const dispatch = useDispatch();
   let day = true;
 
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+  const handleDate = (newValue) => {
+    setValue(newValue);
+    console.log(newValue);
     if (day) {
       dispatch(updatePatientList(patienttoday));
     } else dispatch(updatePatientList(patientyesterday));
@@ -101,28 +97,16 @@ export default function UserManagement() {
           paddingBottom: 9,
         }}
       >
-        <ToggleButtonGroup
-          color="primary"
-          value={alignment}
-          exclusive
-          onChange={handleChange}
-        >
-          <ToggleButton value="Today">Today</ToggleButton>
-          <ToggleButton value="Yesterday">Yesterday</ToggleButton>
-          <ToggleButton value="Select Date">
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              {" "}
-              <DesktopDatePicker
-                label="Date"
-                inputFormat="MM/dd/yyyy"
-                value={value}
-                onChange={handleDate}
-                renderInput={(params) => <TextField {...params} />}
-              />
-              {/* <CalendarMonth /> */}
-            </LocalizationProvider>
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DesktopDatePicker
+            label="Search by Date"
+            inputFormat="dd/MM/yyyy"
+            value={value}
+            onChange={handleDate}
+            renderInput={(params) => <TextField {...params} />}
+          />
+          {/* <CalendarMonth /> */}
+        </LocalizationProvider>
       </Grid>
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid

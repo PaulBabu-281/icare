@@ -36,6 +36,7 @@ import UserManagement from "./userManagement";
 import Operations from "./Operations";
 import PatientDiagnosis from "./PatientDiagnosis";
 import TokenView from "./token";
+import { Button, Grid } from "@mui/material";
 //import { Switch } from "@mui/material";
 
 const drawerWidth = 240;
@@ -104,17 +105,29 @@ export default function Doctor(props) {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
-        position='fixed'
+        position="fixed"
         sx={{
           width: `calc(100% - ${drawerWidth}px)`,
           ml: `${drawerWidth}px`,
           backgroundColor: "#4c51c6",
         }}
       >
-        <Toolbar>
-          <Typography variant='h6' noWrap component='div'>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Typography variant="h6" noWrap component="div">
             {appbarText}
           </Typography>
+          <Button
+            onClick={LogoutHandler}
+            color="inherit"
+            startIcon={<Logout />}
+            sx={{
+              "&:hover": {
+                background: "#fd830d",
+              },
+            }}
+          >
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -132,8 +145,8 @@ export default function Doctor(props) {
             boxSizing: "border-box",
           },
         }}
-        variant='permanent'
-        anchor='left'
+        variant="permanent"
+        anchor="left"
         classes={{ paper: classes.paper }}
       >
         <Toolbar style={{ height: "15%" }}>
@@ -144,7 +157,7 @@ export default function Doctor(props) {
                   <AccountCircle />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary='Doctor' />
+              <ListItemText primary="Doctor" />
             </ListItem>
           </List>
         </Toolbar>
@@ -182,37 +195,13 @@ export default function Doctor(props) {
           ))}
         </List>
         <Divider />
-
-        <List sx={{ paddingRight: 2, paddingTop: "100%" }}>
-          <ListItem
-            button
-            key={"Logout"}
-            sx={{
-              maxWidth: 360,
-              marginLeft: 1,
-              marginTop: 1,
-              borderRadius: 2,
-              borderWidth: 1,
-
-              "&:hover": {
-                background: "#fd830d",
-              },
-            }}
-            onClick={LogoutHandler}
-          >
-            <ListItemIcon>
-              <Logout />
-            </ListItemIcon>
-            <ListItemText primary={"Logout"} />
-          </ListItem>
-        </List>
       </Drawer>
       <Box
-        component='main'
+        component="main"
         sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
       >
         {location.pathname == "/" ? (
-          <Navigate to='doctor/dashboard' state={{ from: location }} replace />
+          <Navigate to="doctor/dashboard" state={{ from: location }} replace />
         ) : (
           ""
         )}
@@ -225,12 +214,12 @@ export default function Doctor(props) {
         </Router> */}
 
         <Routes>
-          <Route path='doctor/dashboard' element={<DashboardView />} />
-          <Route path='doctor/usermanagement' element={<UserManagement />} />
-          <Route path='doctor/operations' element={<Operations />} />
-          <Route path='doctor/tokenview' element={<TokenView />} />
+          <Route path="doctor/dashboard" element={<DashboardView />} />
+          <Route path="doctor/usermanagement" element={<UserManagement />} />
+          <Route path="doctor/operations" element={<Operations />} />
+          <Route path="doctor/tokenview" element={<TokenView />} />
           <Route
-            path='doctor/patientdiagnosis'
+            path="doctor/patientdiagnosis"
             element={<PatientDiagnosis />}
           />
         </Routes>

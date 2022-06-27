@@ -1,49 +1,50 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import axios from "axios";
-
-var initialState = [
-  {
-    id: 1,
-    name: "Raju Bhai",
-    tokenNo: 1,
-    age: 35,
-    weight: 75,
-    temperature: 45,
-    BPM: 77,
-    gender: "M",
-  },
-  {
-    id: 2,
-    name: "Rocky Bhai",
-    tokenNo: 2,
-    age: 28,
-    weight: 75,
-    temperature: 45,
-    BPM: 77,
-    gender: "M",
-  },
-  {
-    id: 3,
-    name: "Megatron",
-    tokenNo: 3,
-    age: 22,
-    weight: 75,
-    temperature: 35,
-    BPM: 77,
-    gender: "f",
-  },
-  {
-    id: 4,
-    name: "Go Back",
-    tokenNo: 4,
-    age: 22,
-    weight: 75,
-    temperature: 35,
-    BPM: 77,
-    gender: "F",
-  },
-];
+//import axios from "axios";
+var value = [];
+const initialState = { value: [] };
+// var initialState = [
+//   {
+//     id: 1,
+//     name: "Raju Bhai",
+//     tokenNo: 1,
+//     age: 35,
+//     weight: 75,
+//     temperature: 45,
+//     BPM: 77,
+//     gender: "M",
+//   },
+//   {
+//     id: 2,
+//     name: "Rocky Bhai",
+//     tokenNo: 2,
+//     age: 28,
+//     weight: 75,
+//     temperature: 45,
+//     BPM: 77,
+//     gender: "M",
+//   },
+//   {
+//     id: 3,
+//     name: "Megatron",
+//     tokenNo: 3,
+//     age: 22,
+//     weight: 75,
+//     temperature: 35,
+//     BPM: 77,
+//     gender: "f",
+//   },
+//   {
+//     id: 4,
+//     name: "Go Back",
+//     tokenNo: 4,
+//     age: 22,
+//     weight: 75,
+//     temperature: 35,
+//     BPM: 77,
+//     gender: "F",
+//   },
+// ];
 
 export const tokenSlice = createSlice({
   //name of the state
@@ -59,23 +60,11 @@ export const tokenSlice = createSlice({
       state.name = action.payload.name;
     },
     getToken: (state, action) => {
+      console.log(action.payload);
       console.log(state);
-      let i = 0;
-      axios({
-        method: "get",
-        url: " https://deploy-test-idoc.herokuapp.com/health/showHealth/",
-        //responseType: "stream",
-      }).then(function (response) {
-        response.data.data.forEach((element) => {
-          console.log(element.temperature);
-          state[i].temperature = Number(element.temperature);
-          state[i].BPM = element.pulse;
-          state[i].weight = element.oxygen;
-          i++;
-        });
-        console.log(response.data.data[0]);
-      });
-      //  state.name = action.payload.name;
+
+      state.value = action.payload;
+      console.log(state.value);
     },
 
     initializeState: (state, action) => {
