@@ -1,5 +1,3 @@
-// patient details page
-
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 // input dialog
@@ -10,8 +8,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 // input dialogx
-import { GRID_CHECKBOX_SELECTION_COL_DEF } from "@mui/x-data-grid-pro";
-
+import {
+  GridActionsCellItem,
+  GRID_CHECKBOX_SELECTION_COL_DEF,
+} from "@mui/x-data-grid-pro";
+import {
+  randomCreatedDate,
+  randomTraderName,
+  randomEmail,
+  randomUpdatedDate,
+} from "@mui/x-data-grid-generator";
 import { Box, Button, Grid, Slide } from "@mui/material";
 import {
   AccountCircle,
@@ -20,29 +26,18 @@ import {
   MedicalServices,
   Password,
   SentimentVerySatisfied,
+  RestartAlt,
+  Visibility,
+  Delete,
 } from "@mui/icons-material";
 
-// date picker
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
-import { useDispatch } from "react-redux";
-import { updatePatientList } from "./../../redux/patientDateSlice";
-
-import { patienttoday, patientyesterday } from "./data";
-
-import { useSelector } from "react-redux";
+import toast from "../../components/snackbar";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function UserManagement() {
-  const data = useSelector((state) => state.savePatientsDay.value);
-  const { format } = require("date-fns");
-
-  console.log(data);
+export default function Lab() {
   // input Dialog
 
   const [open, setOpen] = React.useState(false);
@@ -53,50 +48,15 @@ export default function UserManagement() {
 
   const handleClose = () => {
     setOpen(false);
+    toast.error("something went wrong!");
   };
+  // input dialog
 
-  // toggle button
-  // const [alignment, setAlignment] = React.useState("web");
-
-  // "2014-08-18T21:11:54";
-  const [value, setValue] = React.useState(format(new Date(), "yyyy-MM-dd"));
-
-  const dispatch = useDispatch();
-  let day = true;
-
-  const handleDate = (newValue) => {
-    setValue(newValue);
-    console.log(newValue);
-    if (day) {
-      dispatch(updatePatientList(patienttoday));
-    } else dispatch(updatePatientList(patientyesterday));
-  };
-
-  //
   return (
     <Grid container direction="column" alignItems={"center"}>
-      <Grid
-        container
-        direction="column"
-        alignItems={"flex-start"}
-        style={{
-          paddingBottom: 9,
-        }}
-      >
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DesktopDatePicker
-            label="Search by Date"
-            inputFormat="dd/MM/yyyy"
-            value={value}
-            onChange={handleDate}
-            renderInput={(params) => <TextField {...params} />}
-          />
-          {/* <CalendarMonth /> */}
-        </LocalizationProvider>
-      </Grid>
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
-          rows={data}
+          rows={rows}
           columns={columns}
           checkboxSelection
           initialState={{
@@ -167,9 +127,9 @@ export default function UserManagement() {
               <TextField
                 autoFocus
                 margin="dense"
-                id="email"
-                label="Email"
-                type="email"
+                id="category"
+                label="Category"
+                type="text"
                 fullWidth
                 variant="standard"
               />
@@ -181,8 +141,8 @@ export default function UserManagement() {
               <TextField
                 autoFocus
                 margin="dense"
-                id="age"
-                label="Age"
+                id="units"
+                label="Units"
                 type="number"
                 fullWidth
                 variant="standard"
@@ -195,8 +155,8 @@ export default function UserManagement() {
               <TextField
                 autoFocus
                 margin="dense"
-                id="post"
-                label="Postion"
+                id="unitType"
+                label="Unit Type"
                 type="text"
                 fullWidth
                 variant="standard"
@@ -207,9 +167,21 @@ export default function UserManagement() {
               <TextField
                 autoFocus
                 margin="dense"
-                id="password"
-                label="Password"
-                type="password"
+                id="company"
+                label="Company"
+                type="text"
+                fullWidth
+                variant="standard"
+              />
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              <Password sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+              <TextField
+                autoFocus
+                margin="dense"
+                id="effect"
+                label="Effect"
+                type="text"
                 fullWidth
                 variant="standard"
               />
@@ -259,22 +231,72 @@ export default function UserManagement() {
 // };
 
 const columns = [
-  { field: "name", headerName: "Name", width: 160, editable: true },
-  { field: "email", headerName: "Email", width: 200, editable: true },
-  { field: "age", headerName: "Age", type: "number", editable: true },
-  { field: "dis", headerName: "Disease", type: 200, editable: true },
+  { field: "name", headerName: "Name", width: 160, editable: false },
   {
-    field: "dateCreated",
-    headerName: "Date Created",
-    type: "date",
-    width: 180,
+    field: "patientName",
+    headerName: "Patient Name ",
+    type: "text",
+    width: 220,
+    editable: false,
+  },
+  {
+    field: "resultStatus",
+    headerName: "Result Status",
+    type: "text",
+    width: 220,
     editable: true,
   },
   {
-    field: "lastLogin",
-    headerName: "Last Login",
-    type: "dateTime",
-    width: 220,
-    editable: true,
+    field: "action",
+    headerName: "Action",
+    sortable: false,
+    renderCell: (params) => {
+      const onClick = (e) => {
+        e.stopPropagation(); // don't select this row after clicking
+
+        const api = params.api;
+        const thisRow = {};
+
+        //  const api: GridApi = params.api;
+        //  const thisRow: Record<string, GridCellValue> = {};
+
+        api
+          .getAllColumns()
+          .filter((c) => c.field !== "__check__" && !!c)
+          .forEach(
+            (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
+          );
+        //params can be used to get the id
+        // thisRow -> the selected row ,use thisRow to access coloums from the selected row
+
+        //generatePath("/users/:id", { id: 42 });
+        console.log(params);
+        // dispatch(updateSelected(Number(thisRow.tokenNo)));
+
+        // navigateToTokenDetails();
+      };
+      return <Button onClick={onClick}>{<Delete />}</Button>;
+    },
+  },
+];
+
+const rows = [
+  {
+    id: 1,
+    name: "blood count",
+    patientName: "Meg",
+    resultStatus: "Patient yet to take test",
+  },
+  {
+    id: 2,
+    patientName: "Loki",
+    name: "thyroid function test",
+    resultStatus: "Awaiting result",
+  },
+  {
+    id: 3,
+    patientName: "Raj",
+    name: "blood count",
+    resultStatus: "Result Ready",
   },
 ];

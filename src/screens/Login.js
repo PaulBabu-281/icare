@@ -4,7 +4,7 @@ import background from "../images/login_background.png";
 import { useState } from "react";
 import { AccountCircle, Lock } from "@mui/icons-material";
 //import { textAlign, width } from "@mui/system";
-import { useMediaQuery } from "react-responsive";
+// import { useMediaQuery } from "react-responsive";
 
 const textFieldStyle = {
   // marginBottom: "2em",
@@ -12,13 +12,13 @@ const textFieldStyle = {
 };
 
 function Login({ LoginDetail, error }) {
-  const isDesktopOrLaptop = useMediaQuery({
-    query: "(min-width: 1224px)",
-  });
-  const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
-  const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
-  const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
+  // const isDesktopOrLaptop = useMediaQuery({
+  //   query: "(min-width: 1224px)",
+  // });
+  // const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
+  // const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+  // const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
+  // const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
 
   const [details, setDetails] = useState({ userid: "", password: "" });
   const SubmitHandler = (e) => {

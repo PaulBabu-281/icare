@@ -37,6 +37,7 @@ import Operations from "./Operations";
 import PatientDiagnosis from "./PatientDiagnosis";
 import TokenView from "./token";
 import { Button, Grid } from "@mui/material";
+import Lab from "./lab";
 //import { Switch } from "@mui/material";
 
 const drawerWidth = 240;
@@ -88,7 +89,7 @@ export default function Doctor(props) {
     {
       text: "Lab Result",
       icon: <Science sx={iconTheme} />,
-      path: "/",
+      path: "doctor/lab",
     },
     {
       text: "Token",
@@ -218,6 +219,7 @@ export default function Doctor(props) {
           <Route path="doctor/usermanagement" element={<UserManagement />} />
           <Route path="doctor/operations" element={<Operations />} />
           <Route path="doctor/tokenview" element={<TokenView />} />
+          <Route path="doctor/lab" element={<Lab />} />
           <Route
             path="doctor/patientdiagnosis"
             element={<PatientDiagnosis />}

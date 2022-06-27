@@ -1,6 +1,5 @@
 import * as React from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+
 import { DataGrid } from "@mui/x-data-grid";
 
 // input dialog
@@ -32,9 +31,9 @@ import {
   MedicalServices,
   Password,
   SentimentVerySatisfied,
-  RestartAlt,
   Fingerprint,
   RememberMe,
+  Delete,
 } from "@mui/icons-material";
 
 //axios import
@@ -255,7 +254,7 @@ export default function UserManagement() {
     );
   };
 
-  // input dialog
+  // end of input dialog
 
   return (
     <Grid container direction="column" alignItems={"center"}>
@@ -323,14 +322,33 @@ const columns = [
     editable: true,
   },
   {
-    field: "actions",
-    type: "actions",
-    width: 150,
-    getActions: () => [
-      <GridActionsCellItem icon={<EditIcon />} label="Edit" />,
-      <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
-      <GridActionsCellItem icon={<RestartAlt />} label="Reset Password" />,
-    ],
+    field: "action",
+    headerName: "Action",
+    sortable: false,
+    renderCell: (params) => {
+      const onClick = (e) => {
+        e.stopPropagation(); // don't select this row after clicking
+
+        const api = params.api;
+        const thisRow = {};
+
+        api
+          .getAllColumns()
+          .filter((c) => c.field !== "__check__" && !!c)
+          .forEach(
+            (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
+          );
+
+        // thisRow -> the selected row ,use thisRow to access coloums from the selected row
+
+        //generatePath("/users/:id", { id: 42 });
+        //console.log(thisRow);
+        // dispatch(updateSelected(Number(thisRow.tokenNo)));
+
+        // navigateToTokenDetails();
+      };
+      return <Button onClick={onClick}>{<Delete />}</Button>;
+    },
   },
 ];
 

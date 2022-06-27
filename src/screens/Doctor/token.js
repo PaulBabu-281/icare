@@ -1,26 +1,30 @@
 import * as React from "react";
 
+import toast from "../../components/snackbar";
+
 import {
   DataGrid,
-  GridApi,
-  GridCellValue,
+  // GridApi,
+  // GridCellValue,
   GridToolbar,
 } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 
-import {
-  GridActionsCellItem,
-  GRID_CHECKBOX_SELECTION_COL_DEF,
-} from "@mui/x-data-grid-pro";
+// import {
+//   GridActionsCellItem,
+//   GRID_CHECKBOX_SELECTION_COL_DEF,
+// } from "@mui/x-data-grid-pro";
 import { Grid } from "@mui/material";
 import { Visibility } from "@mui/icons-material";
-import { generatePath, Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSelected } from "../../redux/tokenSelectSlice";
 import { getToken } from "../../redux/tokenSlice";
 import axios from "axios";
 
 export default function TokenView() {
+  const [isloading, setloading] = React.useState(true);
+
   let navigate = useNavigate();
 
   const navigateToTokenDetails = () => {
@@ -31,17 +35,28 @@ export default function TokenView() {
   console.log(patients);
 
   const dispatch = useDispatch();
+  // function to handel cell edit
+  const handleCommit = (e) => {
+    console.log(e);
+  };
 
+  // api to fetchtoken
   const fetchToken = async () => {
     await axios({
       method: "get",
       url: " https://deploy-test-idoc.herokuapp.com/health/showHealth/",
       //responseType: "stream",
-    }).then(function (response) {
-      console.log(response.data.data);
-      dispatch(getToken(response.data.data));
-      //return response.data.data;
-    });
+    })
+      .then(function (response) {
+        console.log(response.data.data);
+        dispatch(getToken(response.data.data));
+        //return response.data.data;
+        setloading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
   };
 
   React.useEffect(() => {
@@ -68,7 +83,7 @@ export default function TokenView() {
       type: "number",
       width: 200,
       //type: 200,
-      editable: false,
+      editable: true,
     },
     {
       field: "pulse",
@@ -99,8 +114,8 @@ export default function TokenView() {
         const onClick = (e) => {
           e.stopPropagation(); // don't select this row after clicking
 
-          const api: GridApi = params.api;
-          const thisRow: Record<string, GridCellValue> = {};
+          const api = params.api;
+          const thisRow = {};
 
           api
             .getAllColumns()
@@ -108,8 +123,9 @@ export default function TokenView() {
             .forEach(
               (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
             );
+
           //generatePath("/users/:id", { id: 42 });
-          //console.log(thisRow);
+          console.log(params);
           dispatch(updateSelected(Number(thisRow.tokenNo)));
 
           navigateToTokenDetails();
@@ -118,44 +134,21 @@ export default function TokenView() {
         return <Button onClick={onClick}>{<Visibility />}</Button>;
       },
     },
-    // {
-    //   field: "actions",
-    //   headerName: "View",
-    //   type: "actions",
-    //   width: 150,
-    //   getActions: () => [
-    //     <Link to={"/doctor/patientdiagnosis"}>
-    //       <GridActionsCellItem icon={<Visibility />} label='Show' />,
-    //     </Link>,
-
-    //     // <GridActionsCellItem icon={<DeleteIcon />} label='Delete' />,
-    //     // <GridActionsCellItem icon={<RestartAlt />} label='Reset Password' />,
-    //   ],
-    // },
   ];
 
   return (
     <Grid container direction="column" alignItems={"center"}>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ height: 600, width: "100%" }}>
         <DataGrid
           //   row.dataset.id
+          onCellEditCommit={handleCommit}
           components={{ Toolbar: GridToolbar }}
           rows={patients}
           columns={columns}
           getRowId={(row) => row._id}
-          //checkboxSelection
-          hideFooterPagination
-          initialState={{
-            pinnedColumns: {
-              left: [GRID_CHECKBOX_SELECTION_COL_DEF.field],
-              right: ["actions"],
-            },
-          }}
+          loading={isloading}
           onSelectionModelChange={(ids) => {
             const selectedIDs = new Set(ids);
-            // const selectedRowData = patients.filter((row) =>
-            //   selectedIDs.has(row.id.toString())
-            // );
             console.log(selectedIDs);
           }}
         />
