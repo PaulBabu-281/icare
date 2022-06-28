@@ -12,7 +12,7 @@ export const userSlice = createSlice({
   // Action is the retrived state or new state to be
   reducers: {
     saveDetails: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.user_name = action.payload.user_name;
       state.user_role = action.payload.user_role;
       // state.role = action.payload.user_role;

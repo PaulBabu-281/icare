@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 //import axios from "axios";
-var value = [];
 const initialState = { value: [] };
 // var initialState = [
 //   {
@@ -60,11 +59,11 @@ export const tokenSlice = createSlice({
       state.name = action.payload.name;
     },
     getToken: (state, action) => {
-      console.log(action.payload);
-      console.log(state);
+      //console.log(action.payload);
+      //  console.log(state);
 
       state.value = action.payload;
-      //  console.log(state.value);
+      // console.log(state.value);
     },
 
     initializeState: (state, action) => {

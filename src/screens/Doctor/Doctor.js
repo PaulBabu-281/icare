@@ -8,6 +8,7 @@ import {
   useLocation,
   Navigate,
 } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -39,6 +40,9 @@ import TokenView from "./token";
 import { Button } from "@mui/material";
 import Lab from "./lab";
 import { useSelector } from "react-redux";
+import { getToken } from "../../redux/tokenSlice";
+import axios from "axios";
+import toast from "../../components/snackbar";
 //import { Switch } from "@mui/material";
 
 const drawerWidth = 240;
@@ -46,7 +50,33 @@ const drawerWidth = 240;
 export default function Doctor(props) {
   const name = useSelector((state) => state.user.user_name);
   let navigate = useNavigate();
+  let dispatch = useDispatch();
   let location = useLocation();
+  const fetchToken = async () => {
+    await axios({
+      method: "get",
+      url: "https://deploy-test-idoc.herokuapp.com/patient",
+      //responseType: "stream",
+    })
+      .then(function (response) {
+        // console.log("data", response.data.Patient);
+        // setPatientList(response.data.Patient[count]);
+
+        dispatch(getToken(response.data.Patient));
+        //return response.data.data;
+        // setloading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
+  };
+  React.useLayoutEffect(() => {
+    fetchToken();
+    //  console.log("hellp");
+    // dispatch(getToken());
+  }, []);
+
   const LogoutHandler = (e) => {
     e.preventDefault();
 

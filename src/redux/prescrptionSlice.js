@@ -16,11 +16,16 @@ export const savePrescrption = createSlice({
     updatePrepList: (state, action) => {
       state.push(action.payload);
       state = { ...state, modalOpen: true };
+      console.log(state);
+    },
+    removePrescription: (state, action) => {
+      state.splice(0, state.length);
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { delPrescription, updatePrepList } = savePrescrption.actions;
+export const { delPrescription, updatePrepList, removePrescription } =
+  savePrescrption.actions;
 
 export default savePrescrption.reducer;

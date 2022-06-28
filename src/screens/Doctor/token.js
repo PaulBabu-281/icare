@@ -25,7 +25,8 @@ import axios from "axios";
 export default function TokenView() {
   const [isloading, setloading] = React.useState(true);
 
-  //const LOCAL_STORAGE_KEY_TOKEN_LIST = "token_list";
+  // const LOCAL_STORAGE_KEY_TOKEN_LIST = "token_list";
+  // const [patientListSave, savePatientList] = React.useState([]);
 
   let navigate = useNavigate();
 
@@ -34,7 +35,7 @@ export default function TokenView() {
   };
 
   const [patients, setPatientList] = React.useState([]);
-  console.log(patients);
+  // console.log(patients);
 
   const dispatch = useDispatch();
   // function to handel cell edit
@@ -53,8 +54,16 @@ export default function TokenView() {
         // console.log(response.data.Patient);
         setPatientList(response.data.Patient);
         dispatch(getToken(response.data.Patient));
+        // localStorage.setItem(
+        //   LOCAL_STORAGE_KEY_TOKEN_LIST,
+        //   response.data.Patient
+        // );
         //return response.data.data;
         setloading(false);
+        // const userLocalSaveUserName = localStorage.getItem(
+        //   LOCAL_STORAGE_KEY_TOKEN_LIST
+        // );
+        // console.log(userLocalSaveUserName);
       })
       .catch((error) => {
         console.log(error);
@@ -68,20 +77,20 @@ export default function TokenView() {
   }, []);
 
   const token = useSelector((state) => state.selectedToken);
-  console.log(token);
+  //console.log(token);
 
   const columns = [
     {
-      field: "tokenNo",
+      field: "token_no",
       headerName: "Token Number",
       width: 110,
       type: "number",
-      valueGetter: (params) => {
-        // console.log(params.row.patient_health[0].token_no);
-        let result = [];
-        result.push(params.row.patient_health.token_no);
-        return result;
-      },
+      // valueGetter: (params) => {
+      //   // console.log(params.row.patient_health[0].token_no);
+      //   let result = [];
+      //   result.push(params.row.patient_health.token_no);
+      //   return result;
+      // },
       editable: false,
     },
     { field: "patient_name", headerName: "Name", width: 175, editable: false },
@@ -92,43 +101,43 @@ export default function TokenView() {
       editable: false,
     },
     {
-      field: "patient_health",
+      field: "temperature",
       headerName: "Body temperature",
       type: "number",
       width: 200,
-      valueGetter: (params) => {
-        // console.log(params.row.patient_health[0].temperature);
-        let result = [];
-        result.push(params.row.patient_health.temperature);
-        return result;
-      },
+      // valueGetter: (params) => {
+      //   // console.log(params.row.patient_health[0].temperature);
+      //   let result = [];
+      //   result.push(params.row.patient_health.temperature);
+      //   return result;
+      // },
 
       //type: 200,
       editable: false,
     },
     {
-      field: "pulse",
+      field: "pulse_rate",
       headerName: "Pulse rate",
       type: "number",
       width: 150,
-      valueGetter: (params) => {
-        // console.log(params.row.patient_health[0].temperature);
-        let result = [];
-        result.push(params.row.patient_health.pulse_rate);
-        return result;
-      },
+      // valueGetter: (params) => {
+      //   // console.log(params.row.patient_health[0].temperature);
+      //   let result = [];
+      //   result.push(params.row.patient_health.pulse_rate);
+      //   return result;
+      // },
       editable: false,
     },
     {
-      field: "oxygen",
+      field: "oxygen_rate",
       headerName: "oxygen",
       type: "number",
-      valueGetter: (params) => {
-        // console.log(params.row.patient_health[0].temperature);
-        let result = [];
-        result.push(params.row.patient_health.oxygen_rate);
-        return result;
-      },
+      // valueGetter: (params) => {
+      //   // console.log(params.row.patient_health[0].temperature);
+      //   let result = [];
+      //   result.push(params.row.patient_health.oxygen_rate);
+      //   return result;
+      // },
       width: 150,
       editable: false,
     },
@@ -151,8 +160,12 @@ export default function TokenView() {
             );
 
           //generatePath("/users/:id", { id: 42 });
-          console.log(params);
-          dispatch(updateSelected(Number(thisRow.tokenNo)));
+          // console.log(params.row);
+          let index = patients.findIndex(
+            (patients) => patients.token_no === params.row.token_no
+          );
+          //  console.log(index);
+          dispatch(updateSelected(index));
 
           navigateToTokenDetails();
         };
