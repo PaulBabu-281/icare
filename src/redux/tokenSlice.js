@@ -64,7 +64,7 @@ export const tokenSlice = createSlice({
       console.log(state);
 
       state.value = action.payload;
-      console.log(state.value);
+      //  console.log(state.value);
     },
 
     initializeState: (state, action) => {

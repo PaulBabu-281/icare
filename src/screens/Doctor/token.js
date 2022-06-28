@@ -25,13 +25,15 @@ import axios from "axios";
 export default function TokenView() {
   const [isloading, setloading] = React.useState(true);
 
+  //const LOCAL_STORAGE_KEY_TOKEN_LIST = "token_list";
+
   let navigate = useNavigate();
 
   const navigateToTokenDetails = () => {
     navigate("/doctor/patientdiagnosis/", { replace: true });
   };
 
-  const patients = useSelector((state) => state.token.value);
+  const [patients, setPatientList] = React.useState([]);
   console.log(patients);
 
   const dispatch = useDispatch();
@@ -44,12 +46,13 @@ export default function TokenView() {
   const fetchToken = async () => {
     await axios({
       method: "get",
-      url: " https://deploy-test-idoc.herokuapp.com/health/showHealth/",
+      url: "https://deploy-test-idoc.herokuapp.com/patient",
       //responseType: "stream",
     })
       .then(function (response) {
-        console.log(response.data.data);
-        dispatch(getToken(response.data.data));
+        // console.log(response.data.Patient);
+        setPatientList(response.data.Patient);
+        dispatch(getToken(response.data.Patient));
         //return response.data.data;
         setloading(false);
       })
@@ -73,36 +76,59 @@ export default function TokenView() {
       headerName: "Token Number",
       width: 110,
       type: "number",
+      valueGetter: (params) => {
+        // console.log(params.row.patient_health[0].token_no);
+        let result = [];
+        result.push(params.row.patient_health.token_no);
+        return result;
+      },
       editable: false,
     },
-    { field: "name", headerName: "Name", width: 175, editable: false },
-    { field: "age", headerName: "Age", type: "number", editable: false },
+    { field: "patient_name", headerName: "Name", width: 175, editable: false },
     {
-      field: "temperature",
+      field: "patient_age",
+      headerName: "Age",
+      type: "number",
+      editable: false,
+    },
+    {
+      field: "patient_health",
       headerName: "Body temperature",
       type: "number",
       width: 200,
+      valueGetter: (params) => {
+        // console.log(params.row.patient_health[0].temperature);
+        let result = [];
+        result.push(params.row.patient_health.temperature);
+        return result;
+      },
+
       //type: 200,
-      editable: true,
+      editable: false,
     },
     {
       field: "pulse",
       headerName: "Pulse rate",
       type: "number",
       width: 150,
-      editable: false,
-    },
-    {
-      field: "weight",
-      headerName: "Weight",
-      type: "number",
-      width: 220,
+      valueGetter: (params) => {
+        // console.log(params.row.patient_health[0].temperature);
+        let result = [];
+        result.push(params.row.patient_health.pulse_rate);
+        return result;
+      },
       editable: false,
     },
     {
       field: "oxygen",
       headerName: "oxygen",
       type: "number",
+      valueGetter: (params) => {
+        // console.log(params.row.patient_health[0].temperature);
+        let result = [];
+        result.push(params.row.patient_health.oxygen_rate);
+        return result;
+      },
       width: 150,
       editable: false,
     },

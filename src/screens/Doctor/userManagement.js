@@ -10,7 +10,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 // input dialogx
-import { GRID_CHECKBOX_SELECTION_COL_DEF } from "@mui/x-data-grid-pro";
+
+import toast from "../../components/snackbar";
 
 import { Box, Button, Grid, Slide } from "@mui/material";
 import {
@@ -33,19 +34,44 @@ import { updatePatientList } from "./../../redux/patientDateSlice";
 import { patienttoday, patientyesterday } from "./data";
 
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function UserManagement() {
-  const data = useSelector((state) => state.savePatientsDay.value);
+  const [patientList, setPatientList] = React.useState([]);
   const { format } = require("date-fns");
 
-  console.log(data);
+  //  console.log(data);
   // input Dialog
 
   const [open, setOpen] = React.useState(false);
+  const [isloading, setloading] = React.useState(true);
+
+  const fetchPatientList = async () => {
+    await axios({
+      method: "get",
+      url: "https://deploy-test-idoc.herokuapp.com/patient",
+      //responseType: "stream",
+    })
+      .then(function (response) {
+        console.log(response.data);
+        setPatientList(response.data.Patient);
+        //dispatch(getToken(response.data.data));
+        //return response.data.data;
+        setloading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
+  };
+
+  React.useEffect(() => {
+    fetchPatientList();
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -96,15 +122,10 @@ export default function UserManagement() {
       </Grid>
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
-          rows={data}
+          rows={patientList}
           columns={columns}
-          checkboxSelection
-          initialState={{
-            pinnedColumns: {
-              left: [GRID_CHECKBOX_SELECTION_COL_DEF.field],
-              right: ["actions"],
-            },
-          }}
+          getRowId={(row) => row._id}
+          loading={isloading}
         />
       </div>
       <Grid
@@ -117,7 +138,7 @@ export default function UserManagement() {
           borderWidth: 1,
         }}
       >
-        <Button
+        {/* <Button
           size="large"
           sx={{
             maxWidth: 200,
@@ -130,7 +151,7 @@ export default function UserManagement() {
           onClick={handleClickOpen}
         >
           Add
-        </Button>
+        </Button> */}
 
         <Dialog
           fullScreen
@@ -155,7 +176,7 @@ export default function UserManagement() {
               <TextField
                 autoFocus
                 margin="dense"
-                id="name"
+                id="patient_name"
                 label="Name"
                 type="text"
                 fullWidth
@@ -167,7 +188,7 @@ export default function UserManagement() {
               <TextField
                 autoFocus
                 margin="dense"
-                id="email"
+                id="patient_mail"
                 label="Email"
                 type="email"
                 fullWidth
@@ -181,7 +202,7 @@ export default function UserManagement() {
               <TextField
                 autoFocus
                 margin="dense"
-                id="age"
+                id="patient_age"
                 label="Age"
                 type="number"
                 fullWidth
@@ -259,22 +280,16 @@ export default function UserManagement() {
 // };
 
 const columns = [
-  { field: "name", headerName: "Name", width: 160, editable: true },
-  { field: "email", headerName: "Email", width: 200, editable: true },
-  { field: "age", headerName: "Age", type: "number", editable: true },
-  { field: "dis", headerName: "Disease", type: 200, editable: true },
+  { field: "patient_id", headerName: "ID", width: 160, editable: true },
+  { field: "patient_name", headerName: "Name", width: 160, editable: true },
+  { field: "patient_mail", headerName: "Email", width: 200, editable: true },
+  { field: "patient_age", headerName: "Age", type: "number", editable: true },
+  { field: "patient_number", headerName: "Number", type: 200, editable: true },
   {
-    field: "dateCreated",
-    headerName: "Date Created",
-    type: "date",
+    field: "patient_address",
+    headerName: "Address",
+
     width: 180,
-    editable: true,
-  },
-  {
-    field: "lastLogin",
-    headerName: "Last Login",
-    type: "dateTime",
-    width: 220,
     editable: true,
   },
 ];

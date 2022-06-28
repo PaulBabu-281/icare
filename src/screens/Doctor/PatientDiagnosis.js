@@ -17,14 +17,43 @@ import { initializeState } from "../../redux/tokenSlice";
 
 import "./doctor.css";
 import { styled } from "@mui/material/styles";
-
+import toast from "../../components/snackbar";
+import axios from "axios";
 const vertLine = () => {
   return <Divider color="black" variant="middle" orientation="vertical" />;
 };
 
 export default function PatientDiagnosis() {
   //State from redux store
-  const patients = useSelector((state) => state.token);
+
+  const [patients, setPatientList] = React.useState([]);
+
+  const fetchToken = async () => {
+    await axios({
+      method: "get",
+      url: "https://deploy-test-idoc.herokuapp.com/patient",
+      //responseType: "stream",
+    })
+      .then(function (response) {
+        // console.log(response.data.Patient);
+        setPatientList(response.data.Patient);
+        //dispatch(getToken(response.data.Patient));
+        //return response.data.data;
+        // setloading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
+  };
+
+  React.useEffect(() => {
+    fetchToken();
+    console.log("hellp");
+    // dispatch(getToken());
+  }, []);
+
+  //const patients = useSelector((state) => state.token);
   const tokenSelected = useSelector((state) => state.selectedToken);
   const Doctor = useSelector((state) => state.user);
   const prescriptionState = useSelector((state) => state.savePrescrption);
@@ -33,7 +62,7 @@ export default function PatientDiagnosis() {
 
   // console.log( "in daiagno");
   //console.log(tokenSelected.value);
-  const [count, setCount] = useState(tokenSelected.value - 1 || 0);
+  const [count, setCount] = useState(1);
   const [prepcount, setPrepCount] = useState(Number(-1));
   //setCount(tokenSelected.value);
   const nextToken = () => {

@@ -327,6 +327,12 @@ const columns = [
   { field: "user_mail", headerName: "Email", width: 200, editable: true },
   { field: "user_role", headerName: "Position", type: 200, editable: true },
   {
+    field: "user_password",
+    headerName: "password",
+    editable: true,
+    render: (rowData) => (rowData.password = "****"),
+  },
+  {
     field: "user_number",
     headerName: "Phone Number",
     width: 180,
