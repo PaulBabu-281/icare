@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import { useNavigate } from "react-router-dom";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import {
   Autocomplete,
@@ -24,6 +25,7 @@ import axios from "axios";
 import toast from "../../components/snackbar";
 import PatientDetailView from "./patientDetails";
 import { updateSelected } from "../../redux/tokenSelectSlice";
+import CustomizedProgressBars from "../../components/circularProgress";
 
 let number = 0;
 
@@ -41,28 +43,38 @@ export default function PatientDiagnosis() {
   const tokenSelected = useSelector((state) => state.selectedToken.value);
   //  console.log(tokenSelected);
   const patients = useSelector((state) => state.token.value[tokenSelected]);
+
   const patientList = useSelector((state) => state.token.value);
   //console.log(patients);
 
   const Doctor = useSelector((state) => state.user.user_name);
   const prescriptionState = useSelector((state) => state.savePrescrption);
 
-  const [stocks, getStocks] = React.useState([]);
+  const [stocks, setStocks] = React.useState();
+  const [loadStock, setStockLoad] = React.useState(true);
+  const [isloading, setloading] = React.useState(false);
 
   const dispatch = useDispatch();
-
+  let navigate = useNavigate();
+  const navigateToToken = () => {
+    navigate("/doctor/tokenview", { replace: true });
+  };
   const fetchStock = async () => {
     await axios({
       method: "get",
-      url: "https://deploy-test-idoc.herokuapp.com/stocks",
+      url: "https://deploy-test-idoc.herokuapp.com/stocks/medecine",
       //responseType: "stream",
     })
       .then(function (response) {
-        // console.log(response.data.stocks);
-        getStocks(response.data.stocks);
-        //dispatch(getToken(response.data.data));
-        //return response.data.data;
-        // setloading(false);
+        console.log(response.data);
+        // {
+        //   const newNames = response.data.map((item) => item);
+        //   setStocks([...stocks, ...newNames]);
+        // }
+
+        //setStocks((stocks) => [..stocks, ...response.data]);
+        setStockLoad(false);
+        console.log(stocks);
       })
       .catch((error) => {
         console.log(error);
@@ -75,8 +87,8 @@ export default function PatientDiagnosis() {
   }, []);
 
   const [count, setCount] = useState(tokenSelected || 0);
-  const [prepcount, setPrepCount] = useState(Number(-1));
-  //setCount(tokenSelected.value);
+  const [finalDiganosis, setDiagnosis] = useState("");
+
   const nextToken = () => {
     setCount(count + 1);
     dispatch(updateSelected(count));
@@ -90,31 +102,71 @@ export default function PatientDiagnosis() {
   };
 
   const [prescription, addPrescription] = React.useState({
-    Drug: "",
-    freq: "",
+    drug_name: "",
+    frequency: "",
     duration: "",
-    inst: "",
-    remaks: "",
-    id: slNo(),
+    time: "",
+    remarks: "",
+    slno: slNo(),
   });
 
-  const SubmitHandler = () => {
-    // dispatch(
-    //   initializeState({
-    //     id: 4,
-    //     name: "Go Back",
-    //     tokenNo: 4,
-    //     age: 22,
-    //     weight: 75,
-    //     temperature: 35,
-    //     BPM: 77,
-    //     gender: "F",
-    //   })
-    // );
-    let num = prepcount;
-    num = num + 1;
+  const changeTokenState = () => {
+    //setloading(true);
+    const instance = axios.create({
+      baseURL: "https://deploy-test-idoc.herokuapp.com",
+    });
 
-    addPrescription({ ...prescription, id: slNo() });
+    instance
+      .post("/patient/tokenchange", {
+        _id: patients._id,
+      })
+      .then((response) => {
+        toast.success("Saved");
+        console.log(response);
+        // navigateToToken();
+
+        // snackbar("saved", "success");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("something went wrong!");
+      });
+    //setloading(false);
+  };
+
+  const submitHandler = () => {
+    setloading(true);
+    changeTokenState();
+    const instance = axios.create({
+      baseURL: "https://deploy-test-idoc.herokuapp.com",
+    });
+
+    instance
+      .post("doctor/newPrescription", {
+        patient_id: patients.patient_id,
+        patient_name: patients.patient_name,
+        patient_age: patients.patient_age,
+        medicines: prescriptionState,
+        final_diagnosis: finalDiganosis,
+        token_no: patients.token_no,
+        doctor_name: Doctor,
+      })
+      .then((response) => {
+        toast.success("Saved");
+        console.log(response);
+        navigateToToken();
+
+        // snackbar("saved", "success");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("something went wrong!");
+      });
+    setloading(false);
+  };
+
+  const addHandler = () => {
+    addPrescription({ ...prescription, slno: slNo() });
     //e.preventDefault();
 
     // setPrepCount(prepcount + 1);
@@ -189,22 +241,49 @@ export default function PatientDiagnosis() {
     );
   };
 
-  const Div = styled("div")(({ theme }) => ({
-    ...theme.typography.button,
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(1),
-  }));
   // fuction return
 
   return (
     <div style={{ width: "100%", height: "110" }}>
-      {" "}
+      {isloading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            height: "100vh",
+            alignItems: "center",
+            zIndex: "1",
+            position: "absolute",
+            left: "50%",
+          }}
+        >
+          <CustomizedProgressBars sx={{ fontSize: "200px" }} size={100} />
+        </Box>
+      ) : (
+        ""
+      )}
       <Box
         sx={{ width: "100%", height: "110", marginTop: 5, marginBottom: 20 }}
         style={{ position: "relative" }}
       >
         <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          {patients ? box() : ""}
+          {patients ? (
+            box()
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                height: "100vh",
+                alignItems: "center",
+                zIndex: "1",
+                position: "absolute",
+                left: "50%",
+              }}
+            >
+              <CustomizedProgressBars sx={{ fontSize: "200px" }} size={100} />
+            </Box>
+          )}
           <Divider variant="middle" />
           <Grid
             container
@@ -223,6 +302,15 @@ export default function PatientDiagnosis() {
               label="Final diagnosis"
               multiline
               rows={2}
+              onChange={
+                (e, value) => {
+                  //console.log("value", e.target.value);
+                  setDiagnosis(e.target.value);
+                  // console.log(finalDiganosis);
+                }
+                // console.log(finalDiganosis)
+              }
+
               // style={{ width: "100 %" }}
               //defaultValue="Default Value"
               //variant="filled"
@@ -240,10 +328,11 @@ export default function PatientDiagnosis() {
             <Autocomplete
               //Key={stocks.stock_name}
               clearOnEscape
+              loading={loadStock}
               onInputChange={(e, value) =>
                 addPrescription({
                   ...prescription,
-                  Drug: value,
+                  drug_name: value,
                 })
               }
               key={false}
@@ -255,7 +344,7 @@ export default function PatientDiagnosis() {
             <Autocomplete
               disablePortal
               onInputChange={(e, value) =>
-                addPrescription({ ...prescription, freq: value })
+                addPrescription({ ...prescription, frequency: value })
               }
               id="combo-box-demo"
               options={Freq}
@@ -280,7 +369,7 @@ export default function PatientDiagnosis() {
             <Autocomplete
               disablePortal
               onInputChange={(e, value) =>
-                addPrescription({ ...prescription, inst: value })
+                addPrescription({ ...prescription, time: value })
               }
               id="combo-box-demo"
               options={afterBefore}
@@ -295,12 +384,18 @@ export default function PatientDiagnosis() {
               label="Remarks "
               multiline
               rows={2}
+              onChange={(e, value) =>
+                addPrescription({ ...prescription, remarks: e.target.value })
+              }
               // style={{ width: "100 %" }}
               //defaultValue="Default Value"
               //variant="filled"
             />
-            <Button onClick={SubmitHandler} variant="contained">
+            <Button onClick={addHandler} variant="contained">
               Add
+            </Button>
+            <Button onClick={submitHandler} variant="contained">
+              Submit
             </Button>
           </Grid>
           <Grid
@@ -317,6 +412,7 @@ export default function PatientDiagnosis() {
               <DataGrid
                 rows={prescriptionState}
                 columns={columns}
+                getRowId={(row) => row.slno}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
                 // checkboxSelection

@@ -1,72 +1,110 @@
 import * as React from "react";
 
+import toast from "../../components/snackbar";
+
 import {
   DataGrid,
-  GridApi,
-  GridCellValue,
+  // GridApi,
+  // GridCellValue,
   GridToolbar,
 } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 
-import {
-  GridActionsCellItem,
-  GRID_CHECKBOX_SELECTION_COL_DEF,
-} from "@mui/x-data-grid-pro";
+// import {
+//   GridActionsCellItem,
+//   GRID_CHECKBOX_SELECTION_COL_DEF,
+// } from "@mui/x-data-grid-pro";
 import { Grid } from "@mui/material";
 import { Visibility } from "@mui/icons-material";
-import { generatePath, Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSelected } from "../../redux/tokenSelectSlice";
 import { getToken } from "../../redux/tokenSlice";
+import axios from "axios";
 
-export default function PrescriptionView() {
+export default function TokenView() {
+  const [isloading, setloading] = React.useState(true);
+
+  // const LOCAL_STORAGE_KEY_TOKEN_LIST = "token_list";
+  // const [patientListSave, savePatientList] = React.useState([]);
+
   let navigate = useNavigate();
 
-  const token = useSelector((state) => state.selectedToken);
-  console.log(token);
-
   const navigateToTokenDetails = () => {
-    navigate("/doctor/patientdiagnosis/", { replace: true });
+    navigate("/pharmacy/Prescriptions/view", { replace: true });
   };
 
-  const patients = useSelector((state) => state.token);
+  const [patients, setPatientList] = React.useState([]);
+  // console.log(patients);
 
   const dispatch = useDispatch();
+  // function to handel cell edit
+  const handleCommit = (e) => {
+    console.log(e);
+  };
 
-  // React.useEffect(() => {
-  //   dispatch(getToken());
-  // });
+  // api to fetchtoken
+  const fetchToken = async () => {
+    await axios({
+      method: "get",
+      url: "https://deploy-test-idoc.herokuapp.com/pharmacy/view",
+      //responseType: "stream",
+    })
+      .then(function (response) {
+        // console.log(response);
+        setPatientList(response.data.prescripDetails);
+        // dispatch(getToken(response.data.Patient));
+
+        setloading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
+  };
+
+  React.useEffect(() => {
+    fetchToken();
+    // dispatch(getToken());
+  }, []);
+
+  const token = useSelector((state) => state.selectedToken);
+  //console.log(token);
 
   const columns = [
+    // {
+    //   field: "token_no",
+    //   headerName: "Token Number",
+    //   width: 110,
+    //   type: "number",
+    //   // valueGetter: (params) => {
+    //   //   // console.log(params.row.patient_health[0].token_no);
+    //   //   let result = [];
+    //   //   result.push(params.row.patient_health.token_no);
+    //   //   return result;
+    //   // },
+    //   editable: false,
+    // },
+    { field: "patient_name", headerName: "Name", width: 175, editable: false },
     {
-      field: "tokenNo",
-      headerName: "Token Number",
-      width: 150,
+      field: "patient_age",
+      headerName: "Age",
       type: "number",
       editable: false,
     },
-    { field: "name", headerName: "Name", width: 200, editable: false },
-    { field: "age", headerName: "Age", type: "number", editable: false },
     {
-      field: "temperature",
-      headerName: "Body temperature",
+      field: "doctor_name",
+      headerName: "Doctor",
       type: "number",
       width: 200,
+      // valueGetter: (params) => {
+      //   // console.log(params.row.patient_health[0].temperature);
+      //   let result = [];
+      //   result.push(params.row.patient_health.temperature);
+      //   return result;
+      // },
+
       //type: 200,
-      editable: false,
-    },
-    {
-      field: "BPM",
-      headerName: "Pulse rate",
-      type: "number",
-      width: 150,
-      editable: false,
-    },
-    {
-      field: "weight",
-      headerName: "Weight",
-      type: "number",
-      width: 220,
       editable: false,
     },
     {
@@ -77,8 +115,8 @@ export default function PrescriptionView() {
         const onClick = (e) => {
           e.stopPropagation(); // don't select this row after clicking
 
-          const api: GridApi = params.api;
-          const thisRow: Record<string, GridCellValue> = {};
+          const api = params.api;
+          const thisRow = {};
 
           api
             .getAllColumns()
@@ -86,9 +124,14 @@ export default function PrescriptionView() {
             .forEach(
               (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
             );
+
           //generatePath("/users/:id", { id: 42 });
-          //console.log(thisRow);
-          dispatch(updateSelected(Number(thisRow.tokenNo)));
+          // console.log(params.row);
+          let index = patients.findIndex(
+            (patients) => patients.patient_name === params.row.patient_name
+          );
+          //console.log(index);
+          dispatch(updateSelected(index));
 
           navigateToTokenDetails();
         };
@@ -96,43 +139,21 @@ export default function PrescriptionView() {
         return <Button onClick={onClick}>{<Visibility />}</Button>;
       },
     },
-    // {
-    //   field: "actions",
-    //   headerName: "View",
-    //   type: "actions",
-    //   width: 150,
-    //   getActions: () => [
-    //     <Link to={"/doctor/patientdiagnosis"}>
-    //       <GridActionsCellItem icon={<Visibility />} label='Show' />,
-    //     </Link>,
-
-    //     // <GridActionsCellItem icon={<DeleteIcon />} label='Delete' />,
-    //     // <GridActionsCellItem icon={<RestartAlt />} label='Reset Password' />,
-    //   ],
-    // },
   ];
 
   return (
     <Grid container direction="column" alignItems={"center"}>
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ height: 600, width: "100%" }}>
         <DataGrid
           //   row.dataset.id
+          onCellEditCommit={handleCommit}
           components={{ Toolbar: GridToolbar }}
           rows={patients}
           columns={columns}
-          //checkboxSelection
-          hideFooterPagination
-          initialState={{
-            pinnedColumns: {
-              left: [GRID_CHECKBOX_SELECTION_COL_DEF.field],
-              right: ["actions"],
-            },
-          }}
+          getRowId={(row) => row._id}
+          loading={isloading}
           onSelectionModelChange={(ids) => {
             const selectedIDs = new Set(ids);
-            // const selectedRowData = patients.filter((row) =>
-            //   selectedIDs.has(row.id.toString())
-            // );
             console.log(selectedIDs);
           }}
         />

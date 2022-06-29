@@ -16,10 +16,6 @@ const dataArr = [
     heading: "Number of Doctor",
     count: "25",
   },
-  {
-    heading: "Number of casualty",
-    count: "25",
-  },
 ];
 const card = (data) => {
   return (

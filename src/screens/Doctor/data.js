@@ -136,15 +136,15 @@ export const Duration = [
 ];
 
 export const columns = [
-  { field: "id", headerName: "Sl No", width: 90 },
+  { field: "slno", headerName: "Sl No", width: 90 },
   {
-    field: "Drug",
+    field: "drug_name",
     headerName: "Drug",
     width: 190,
     editable: true,
   },
   {
-    field: "freq",
+    field: "frequency",
     headerName: "Frequency",
     width: 150,
     editable: true,
@@ -157,7 +157,7 @@ export const columns = [
     editable: true,
   },
   {
-    field: "inst",
+    field: "time",
     headerName: "Instruction",
     width: 190,
     editable: true,

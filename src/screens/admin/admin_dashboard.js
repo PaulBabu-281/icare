@@ -71,7 +71,7 @@ export default function PermanentDrawerLeft(props) {
     color: "#e9f4ff",
   };
 
-  const [appbarText, setText] = React.useState("Welcome, " + name);
+  const [appbarText, setText] = React.useState("Welcome");
   //console.log("name from redux " + name);
 
   const menuItems = [
@@ -89,11 +89,6 @@ export default function PermanentDrawerLeft(props) {
       text: "Stocks",
       icon: <Inventory sx={iconTheme} />,
       path: "/admin/stocks",
-    },
-    {
-      text: "Lab",
-      icon: <Biotech sx={iconTheme} />,
-      path: "/admin/lab",
     },
   ];
 

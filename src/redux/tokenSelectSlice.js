@@ -6,7 +6,7 @@ export const selectedToken = createSlice({
   //name of the state
   name: "selectedToken",
   //intialState valuse are optional remove after testing
-  initialState: { value: 2 },
+  initialState: { value: 0 },
   // Action is the retrived state or new state to be
   reducers: {
     saveDetails: (state = { initialState }, action) => {

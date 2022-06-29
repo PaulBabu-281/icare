@@ -6,6 +6,8 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import axios from "axios";
+import toast from "../../components/snackbar";
 
 const dataArr = [
   {
@@ -16,12 +18,39 @@ const dataArr = [
     heading: "Number of Doctor",
     count: "25",
   },
-  {
-    heading: "Number of casualty",
-    count: "25",
-  },
 ];
 const card = (data) => {
+  const [count, setCount] = React.useState({
+    doctors: 0,
+    patients: 0,
+  });
+  //const [patient, setPatient] = React.useState(0);
+  const fetchCount = async () => {
+    await axios({
+      method: "get",
+      url: "https://deploy-test-idoc.herokuapp.com/dash/count",
+      //responseType: "stream",
+    })
+      .then(function (response) {
+        //   setCount({ ...count, doctors: response.data.doctors });
+        // setDoctors(response.data.doctors);
+        console.log("data", response.data.doctors);
+        setCount({ ...count, doctors: response.data.doctors });
+        setCount({ ...count, doctors: response.data.doctors });
+
+        // setloading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
+  };
+  React.useLayoutEffect(() => {
+    fetchCount();
+    //  console.log("hellp");
+    // dispatch(getToken());
+  }, []);
+
   return (
     <Grid container sx={{ margin: 2, width: 300 }}>
       <React.Fragment>

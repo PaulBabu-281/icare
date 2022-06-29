@@ -44,15 +44,23 @@ import { useSelector } from "react-redux";
 import { SnackbarProvider } from "notistack";
 import Stocks from "./stocks";
 import PrescriptionView from "./prepscription";
+import MedicineViewPage from "./medicneView";
 import { Button } from "@mui/material";
+import { getToken } from "../../redux/tokenSlice";
+import axios from "axios";
+import toast from "../../components/snackbar";
+import { useDispatch } from "react-redux";
 
 const drawerWidth = 240;
 
 export default function PharmacyDashboard(props) {
   const name = useSelector((state) => state.user.user_name);
-  console.log("name from redux " + name);
+  const [doctor, setDoctors] = React.useState(0);
+  const [patient, setPatient] = React.useState(0);
+  //console.log("name from redux " + name);
   let navigate = useNavigate();
   let location = useLocation();
+  let dispatch = useDispatch();
 
   const LogoutHandler = (e) => {
     e.preventDefault();
@@ -76,7 +84,51 @@ export default function PharmacyDashboard(props) {
     color: "#e9f4ff",
   };
 
-  const [appbarText, setText] = React.useState("Welcome," + name);
+  const fetchToken = async () => {
+    await axios({
+      method: "get",
+      url: "https://deploy-test-idoc.herokuapp.com/pharmacy/view",
+      //responseType: "stream",
+    })
+      .then(function (response) {
+        // console.log("data", response.data.Patient);
+        // setPatientList(response.data.Patient[count]);
+        //console.log(response.data.prescripDetails);
+        dispatch(getToken(response.data.prescripDetails));
+        //return response.data.data;
+        // setloading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
+  };
+  const fetchCount = async () => {
+    await axios({
+      method: "get",
+      url: "https://deploy-test-idoc.herokuapp.com/dash/count",
+      //responseType: "stream",
+    })
+      .then(function (response) {
+        //   setCount({ ...count, doctors: response.data.doctors });
+        setDoctors(response.data.doctors);
+        console.log("data", response.data.doctors);
+
+        // setloading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
+  };
+  React.useLayoutEffect(() => {
+    fetchToken();
+    fetchCount();
+    //  console.log("hellp");
+    // dispatch(getToken());
+  }, []);
+
+  const [appbarText, setText] = React.useState("Welcome");
   //console.log("name from redux " + name);
 
   const menuItems = [
@@ -239,6 +291,10 @@ export default function PharmacyDashboard(props) {
             <Route
               path="/pharmacy/Prescriptions"
               element={<PrescriptionView />}
+            />
+            <Route
+              path="/pharmacy/Prescriptions/view"
+              element={<MedicineViewPage />}
             />
           </Routes>
         </SnackbarProvider>
