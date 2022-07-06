@@ -35,8 +35,11 @@ const card = (data) => {
         //   setCount({ ...count, doctors: response.data.doctors });
         // setDoctors(response.data.doctors);
         console.log("data", response.data.doctors);
-        setCount({ ...count, doctors: response.data.doctors });
-        setCount({ ...count, doctors: response.data.doctors });
+        let dcount = response.data.doctors;
+        console.log(typeof dcount);
+        setCount((count) => ({ ...count.doctors, doctors: dcount }));
+        setCount({ ...count, patients: response.data.patients });
+        console.log(count);
 
         // setloading(false);
       })

@@ -97,7 +97,8 @@ export default function PatientDiagnosis() {
   const lastToken = () => {
     setCount(count - 1);
     dispatch(updateSelected(count));
-    dispatch(removePrescription());
+    console.log(count);
+    dispatch(removePrescription([]));
     //console.log(count);
   };
 
@@ -193,7 +194,7 @@ export default function PatientDiagnosis() {
             variant="outlined"
             startIcon={<ArrowBack />}
             onClick={() => {
-              if (count >= 0) lastToken();
+              if (count > 0) lastToken();
             }}
           >
             Back
@@ -211,7 +212,8 @@ export default function PatientDiagnosis() {
             variant="outlined"
             startIcon={<ArrowForward />}
             onClick={() => {
-              if (count <= patientList.length - 1) nextToken();
+              console.log(count);
+              if (count < patientList.length - 1) nextToken();
             }}
           >
             Next
